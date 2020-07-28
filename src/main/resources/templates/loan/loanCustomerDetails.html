@@ -1,0 +1,463 @@
+<!doctype html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{utils::admin_head}">
+</head>
+<body>
+<!-- 头部功能部分 start-->
+<header th:insert="~{utils::admin_header}" >
+</header>
+<!-- 头部功能部分 end-->
+
+<div class="am-cf admin-main">
+    <!-- 导航栏公共部分 start -->
+    <div th:insert="~{utils::navigation_bar}"></div>
+    <!-- 导航栏公共部分 end -->
+    <!-- 内容部分 -->
+    <div class="admin-content">
+        <input type="hidden" th:name="projectId" th:id="projectId" th:value="${projectId}">
+        <input type="hidden" th:name="personId" th:id="personId" th:value="${loanCustomerDetails.personId}">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf">
+                <span th:switch="${loanType}">
+                    <a class="am-text-primary am-text-lg" href="#" th:href="@{/loan/headLoanManage}" th:case="head">总部贷后管理</a>
+                    <a class="am-text-primary am-text-lg" href="#" th:href="@{/loan/branchLoanManage}" th:case="branch">分行贷后管理</a>
+                    <a class="am-text-primary am-text-lg" href="#" th:href="@{/loan/recycleLoanManage}" th:case="recycle">回收贷后管理</a>
+                </span>
+                / <small>跟进客户</small></div>
+        </div>
+
+        <div class="am-tabs am-margin" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li th:class="${typeContent==null ?'am-active':''}"><a href="#tab1">基本信息</a></li>
+                <li th:class="${typeContent=='follow' ?'am-active':''}"><a href="#tab2">评论记录</a></li>
+                <li th:class="${typeContent=='outVisit' ?'am-active':''}"><a href="#tab3">电催/外访</a></li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel am-fade" th:class="${typeContent==null ?'am-tab-panel am-fade am-in am-active':'am-tab-panel am-fade'}" id="tab1">
+                    <form class="am-form">
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">借款人姓名</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.customerName}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">身份证号码</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">虚假信息</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <select data-am-selected="{btnSize: 'sm',maxHeight: 250}" th:name="falseInformation" th:id="falseInformation">
+                                <option value="-1"></option>
+                                <option value="0">无虚假</option>
+                                <option value="1">联系人信息虚假--配偶信息虚假</option>
+                                <option value="2">联系人信息虚假--父母信息虚假</option>
+                                <option value="3">联系人信息虚假--朋友信息虚假</option>
+                                <option value="4">联系人信息虚假--通讯录信息虚假</option>
+                                <option value="5">联系人信息虚假--其他联系人信息虚假</option>
+                                <option value="6">经营场地虚假</option>
+                                <option value="7">住址虚假</option>
+                                <option value="8">工作单位虚假</option>
+                                <option value="9">生意经营虚假</option>
+                                <option value="11">生意经1营虚假</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">跟进状态</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <select data-am-selected="{btnSize: 'sm',maxHeight: 250}" th:name="followState" th:id="followState">
+                                <option value="-1"></option>
+                                <option value="0">失联</option>
+                                <option value="1">找到本人</option>
+                                <option value="2">找到家人</option>
+                                <option value="3">承诺还款</option>
+                                <option value="4">违背承诺</option>
+                                <option value="5">查找中</option>
+                                <option value="6">结清</option>
+                                <option value="7">投诉</option>
+                                <option value="8">其他</option>
+                                <option value="9">谈判中</option>
+                                <option value="10">建议外访</option>
+                                <option value="11">新开案件</option>
+                                <option value="12">建议委外</option>
+                                <option value="13">Pend</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">逾期原因</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <select data-am-selected="{btnSize: 'sm',maxHeight: 250}" th:name="caseState" th:id="caseState">
+                                <option value="-1"></option>
+                                <option value="0">包装客户</option>
+                                <option value="1">经营不善</option>
+                                <option value="2">对外投资失败</option>
+                                <option value="3">生意被政府取缔</option>
+                                <option value="4">主要下游企业倒闭</option>
+                                <option value="5">过度消费</option>
+                                <option value="6">不良嗜好</option>
+                                <option value="7">意外事故</option>
+                                <option value="8">重大疾病</option>
+                                <option value="9">死亡</option>
+                                <option value="10">其他</option>
+                                <option value="11">银行抽贷</option>
+                                <option value="12">隐性负债高</option>
+                                <option value="13">重大涉诉案件</option>
+                                <option value="14">还款意识差(老赖)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">所属分行</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.departMentName}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">借款金额</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.projectMoney}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">到账金额</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.actualMoney}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">月还款额</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.monthlyPayment}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">产品类型</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${T(com.small.constant.RedisUtilsData).getProductParameterName(loanCustomerDetails.productId)}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">签约日</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${#dates.format(loanCustomerDetails.startDate, 'yyyy-MM-dd')}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">代扣日</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.withholdingDay}" disabled>
+                        </div>
+                    </div><div class="am-g am-margin-top">
+                    <div class="am-u-sm-4 am-u-md-2 am-text-right">借款期限</div>
+                    <div class="am-u-sm-8 am-u-md-10">
+                        <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.payIntentPeriod}" disabled>
+                    </div>
+                </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">已还期数</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.payOffCount}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">逾期日期</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${#dates.format(loanCustomerDetails.earliestOverdueDate, 'yyyy-MM-dd')}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">本金余额</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.balancePrincipal}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">逾期费合计</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.overduePrincipalSum}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">未还款金额</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.sumNotPaidAmount}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">展期未还</div>
+                        <div class="am-u-sm-8 am-u-md-10">
+                            <input class="am-form-field" type="text" th:placeholder="${loanCustomerDetails.delayNotMoneySum}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-g am-margin-top-sm">
+                        <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                            逾期详情
+                        </div>
+                        <div class="am-u-sm-8 am-u-md-4 am-u-end">
+                            <textarea rows="4" placeholder="逾期详情" th:text="${loanCustomerDetails.caseStateDetails}" th:name="caseStateDetails" th:id="caseStateDetails"></textarea>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="am-margin">
+                        <button type="button" class="am-btn am-btn-primary am-btn-xs" th:onclick="save()">提交保存</button>
+                        <button type="button" class="am-btn am-btn-primary am-btn-xs" th:onclick="giveupsave()">放弃保存</button>
+                    </div>
+                </div>
+
+                <div class="am-tab-panel am-fade" th:class="${typeContent=='follow' ?'am-tab-panel am-fade am-in am-active':'am-tab-panel am-fade'}" id="tab2">
+
+                    <div class="am-g">
+                        <div class="am-u-sm-12 am-u-md-6">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="addFollowUpComment()"><span class="am-icon-plus"></span> 新增</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-g">
+                        <table class="am-table am-table-striped am-table-hover table-main">
+                            <thead>
+                            <tr>
+                                <th>评论时间</th>
+                                <th class="am-text-nowrap">评论人</th>
+                                <th>内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each ="followUpComment : ${followUpCommentList}">
+                                <td th:text="${#dates.format(followUpComment.commentDate, 'yyyy-MM-dd')}" class="am-text-nowrap">评论时间</td>
+                                <td th:text="${T(com.small.constant.RedisUtilsData).getUserName(followUpComment.commentManId)}">评论人</td>
+                                <td th:text="${followUpComment.commentContent}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="am-tab-panel am-fade"  th:class="${typeContent=='outVisit' ?'am-tab-panel am-fade am-in am-active':'am-tab-panel am-fade'}" id="tab3">
+
+                    <div class="am-g">
+                        <div class="am-u-sm-12 am-u-md-6">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="editPersonPhonecheck()"><span class="am-icon-pencil"></span> 编辑</button>
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="addPersonPhonecheck()"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="allPhoneUrgeRecord()"><span class="am-icon-search-plus"></span> 所有记录</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-g">
+                        <table class="am-table am-table-striped am-table-hover table-main">
+                            <thead>
+                            <tr>
+                                <th class="table-check"></th>
+                                <th>关系</th>
+                                <th>姓名</th>
+                                <th>类型</th>
+                                <th>电话号码</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each ="personPhonecheck : ${personPhonecheckList}" class="table-click">
+                                <td><input type="radio" th:name="personPhonecheckId"  th:value="${personPhonecheck.id}"/></td>
+                                <td th:text="${T(com.small.constant.RedisUtilsData).getDictionaryItemValue(personPhonecheck.relationship)}" th:style="${personPhonecheck.newsaveflag!=2?'color:red':''}">关系</td>
+                                <td th:text="${personPhonecheck.relationname}">姓名</td>
+                                <td th:switch="${personPhonecheck.phonetype}">
+                                    <span th:case="1">手机</span>
+                                    <span th:case="2">家庭</span>
+                                    <span th:case="3">单位</span>
+                                    <span th:case="4">单位</span>
+                                    <span th:case="*"></span>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-g">
+                        <div class="am-u-sm-12 am-u-md-6">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="editOutVisitRecord()"><span class="am-icon-pencil"></span> 编辑</button>
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="addOutVisitRecord()"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" class="am-btn am-btn-default" th:onclick="allOutVisitRecord()"><span class="am-icon-search-plus"></span> 所有记录</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-g">
+                        <table class="am-table am-table-striped am-table-hover table-main">
+                            <thead>
+                            <tr>
+                                <th class="table-check"></th>
+                                <th>地址</th>
+                                <th>详址</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each ="outVisitRecord : ${outVisitRecordList}" th:if="${outVisitRecord.addressType ne 8 and outVisitRecord.addressType ne 9}" class="table-click">
+                                <td><input type="radio" th:name="outVisitRecordId" th:value="${outVisitRecord.id}"/></td>
+                                <td th:switch="${outVisitRecord.addressType}" class="am-text-nowrap" th:style="${outVisitRecord.isNew?'':'color:red'}">
+                                    <span th:case="0">现居住地详址</span>
+                                    <span th:case="1">房产详址</span>
+                                    <span th:case="2">房产详址</span>
+                                    <span th:case="3">经营地详址</span>
+                                    <span th:case="4">配偶单位详址</span>
+                                    <span th:case="5">联系人家庭住址</span>
+                                    <span th:case="6">户籍住址</span>
+                                    <span th:case="7">其他资料</span>
+                                    <span th:case="8">展期申请表</span>
+                                    <span th:case="9">还款承诺书</span>
+                                    <span th:case="*"></span>
+                                </td>
+                                <td th:text="${outVisitRecord.detailedAddress}">地址详情</td>
+                                <td th:switch="${outVisitRecord.addressState}" class="am-text-nowrap">
+                                    <span th:case="0">未确定</span>
+                                    <span th:case="1">有效地址</span>
+                                    <span th:case="2">无效地址</span>
+                                    <span th:case="*"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="follow_up_comment_content_text">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加评论内容</div>
+            <div class="am-modal-bd">
+                <div class="am-g am-margin-top-sm">
+                    <textarea rows="4" placeholder="评论内容" style="width: 100%" class="am-modal-prompt-input"></textarea>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            </div>
+        </div>
+    </div>
+    <!-- content end -->
+</div>
+<!--底部js引入-->
+<footer th:insert="~{utils::bottom_js}"/>
+<script th:inline="javascript">
+    var $loanType = [[${loanType}]];
+    /**给这个页面添加选中点击表格的名称为projectId的单选*/
+    $('body').on('click', '.table-click', function () {
+        $(this).find("input[type='radio']").prop("checked",true);
+    });
+
+    $(function() {
+        /**默认给下拉框初始值*/
+        getSelected($('#caseState'),[[${loanCustomerDetails.caseState}]]);
+        getSelected($('#followState'),[[${loanCustomerDetails.followState}]]);
+        getSelected($('#falseInformation'),[[${loanCustomerDetails.falseInformation}]]);
+    });
+
+    //新增评论记录
+    function addFollowUpComment(){
+        var $projectId = $("#projectId").val();
+        if($projectId){
+            $('#follow_up_comment_content_text').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    $.post("/loan/addFollowUpComment/"+$loanType,
+                        {
+                            projectId:$projectId,
+                            contactContent:e.data},
+                        function(result){
+                            if(result && result.hasOwnProperty("success")){
+                                if(result.success){
+                                    //异步添加一条数据
+                                    postSubmit("/loan/loanCustomerDetails/"+$loanType,{projectId:$projectId,typeContent:'follow'});
+                                }else{
+                                    myAlert(result.error);
+                                }
+                            }else{
+                                myAlert("添加异常，请重新尝试添加！");
+                            }
+                        });
+                }
+            });
+        }else{
+            myAlert("请先添加联系人后在添加评论");
+        }
+    }
+
+    /**电催编辑*/
+    function editPersonPhonecheck(){
+        var $personPhonecheckId = $("input[name='personPhonecheckId']:checked").val();
+        if($personPhonecheckId){
+            postSubmit("/pur/editPersonPhonecheck/"+$loanType,{personPhonecheckId:$personPhonecheckId});
+        }else{
+            myAlert("请选择一条数据！")
+        }
+    }
+
+    /**电催添加客户信息*/
+    function addPersonPhonecheck(){
+        postSubmit("/pur/editPersonPhonecheck/"+$loanType,{projectid:$("#projectId").val(),personid:$("#personId").val()});
+    }
+
+    /**电催，查询所有信息*/
+    function allPhoneUrgeRecord(){
+        postSubmit("/pur/allPhoneUrgeRecord/"+$loanType,{projectid:$("#projectId").val()});
+    }
+
+    /**外访地址编辑*/
+    function editOutVisitRecord(){
+        var $outVisitRecordId = $("input[name='outVisitRecordId']:checked").val();
+        if($outVisitRecordId){
+            postSubmit("/ovr/editOutVisitRecord/"+$loanType,{outVisitRecordId:$outVisitRecordId});
+        }else{
+            myAlert("请选择一条数据！")
+        }
+    }
+    /**外访地址添加*/
+    function addOutVisitRecord(){
+        postSubmit("/ovr/editOutVisitRecord/"+$loanType,{projectId:$("#projectId").val(),personId:$("#personId").val()});
+    }
+    /**外访地址，查询所有*/
+    function allOutVisitRecord(){
+        postSubmit("/ovr/allOutVisitRecord/"+$loanType,{projectId:$("#projectId").val()});
+    }
+
+    /**保存*/
+    function save(){
+        $.post("/loan/saveLoanCustomer/"+$loanType,
+            {
+                projectId:$("#projectId").val(),
+                falseInformation:$("#falseInformation").val(),
+                followState:$("#followState").val(),
+                caseState:$("#caseState").val(),
+                caseStateDetails:$("#caseStateDetails").val()
+            },function(data){
+                if(data.success){
+                    myAlert("保存成功");
+                }else{
+                    myAlert(data.error);
+                }
+        });
+    }
+
+    /**放弃保存*/
+    function giveupsave(){
+        location.reload();
+    }
+</script>
+</body>
+</html>

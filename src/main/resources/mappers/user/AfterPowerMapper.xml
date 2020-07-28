@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.small.mapper.after.AfterPowerMapper" >
+    <select id="selectAfterPowerByAbilityId" resultType="com.small.entity.after.AfterPower">
+        select
+          p.id,
+          p.power_name as authority,
+          p.power_level as powerLevel,
+          p.power_url as powerUrl
+        from after_power p inner join after_ability_power ap on p.id = ap.after_power_id
+        where ap.after_ability_id = #{abilityId}
+    </select>
+</mapper>

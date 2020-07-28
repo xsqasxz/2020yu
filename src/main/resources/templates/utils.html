@@ -1,0 +1,208 @@
+<!doctype html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="admin_head">
+    <meta charset="utf-8">
+    <title>长信数科小额贷款管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" type="image/png" href="../static/i/favicon.ico" th:href="@{/i/favicon.ico}">
+    <link rel="apple-touch-icon-precomposed" href="../static/i/app-icon72x72@2x.png" th:href="@{/i/favicon.ico}">
+    <link rel="stylesheet" href="../static/css/amazeui.min.css" th:href="@{/css/amazeui.min.css}"/>
+    <link rel="stylesheet" href="../static/css/admin.css" th:href="@{/css/admin.css}">
+</head>
+<body>
+<!-- 头部功能部分 start-->
+<header class="am-topbar admin-header" th:fragment="admin_header">
+    <div class="am-topbar-brand">
+        <strong sec:authentication="principal.newPositionName">当前岗位</strong> <small sec:authentication="name">登录帐号</small>
+    </div>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+        <form method="post" class="am-form" action="#" th:action="@{/login}" th:method="post" id="switch_account_form_id">
+            <input type="hidden" name="username" id="username" value="">
+            <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                        <span class="am-icon-users"></span>切换帐号<span class="am-icon-caret-down"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li th:each="newPosition : ${#authentication.principal.newPositionList}"><a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.username}')|"><span class="am-icon-user"></span><span th:text="${newPosition.name}">岗位名称</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" th:href="@{/logout}"><span class="am-icon-power-off"></span> 退出</a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</header>
+<!-- 头部功能部分 end-->
+
+<div class="am-cf admin-main">
+    <!-- 导航栏公共部分 start -->
+    <div th:fragment="navigation_bar" class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+        <div class="am-offcanvas-bar admin-offcanvas-bar">
+            <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
+                <li  class="am-panel">
+                    <a href="#" th:href="@{/index}"><i class="am-icon-home am-margin-left-sm"></i> 首页</a>
+                </li>
+                <!--<li  class="am-panel">-->
+                    <!--<a href="#" th:href="@{/demo}"><i class="am-icon-home am-margin-left-sm"></i> 任务处理</a>-->
+                <!--</li>-->
+                <li class="am-panel" sec:authorize="hasAuthority('SlSmallLoanProjectAfter')">
+                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#company-nav'}">
+                        <i class="am-icon-list-ul am-margin-left-sm"></i> 贷后管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="am-list am-collapse admin-sidebar-sub" th:class="${parentNode eq 'loan'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" id="company-nav">
+                        <li sec:authorize="hasAuthority('HeadLoanManageDetailView')"><a href="#"  th:href="@{/loan/headLoanManage}"><span class="am-icon-briefcase am-margin-left-sm"></span> 总部贷后管理 </a></li>
+                        <li sec:authorize="hasAuthority('BranchLoanManageDetailView')"><a href="#" th:href="@{/loan/branchLoanManage}"><span class="am-icon-file-text am-margin-left-sm"></span> 分行贷后管理 </a></li>
+                        <li sec:authorize="hasAuthority('OutsourcingLoanManageDetailView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 委外贷后管理 </a></li>
+                        <li sec:authorize="hasAuthority('RestLoanManageView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 其他贷后管理 </a></li>
+                        <li sec:authorize="hasAuthority('RecycleLoanManage')"><a href="#" th:href="@{/loan/recycleLoanManage}"><span class="am-icon-recycle am-margin-left-sm"></span> 回收贷后管理 </a></li>
+                        <li sec:authorize="hasAuthority('RepaymentRemindView')"><a href="#" th:href="@{/ri/remind}"><span class="am-icon-suitcase am-margin-left-sm"></span> 还款提醒 </a></li>
+                        <li sec:authorize="hasAuthority('LawSuitView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 诉讼列表 </a></li>
+                        <li sec:authorize="hasAuthority('PostLoanMonitoringManagement')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 贷后监控管理 </a></li>
+                        <li sec:authorize="hasAuthority('RecoveryOfOverdueAmount')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 逾期金额回收报表 </a></li>
+                        <li sec:authorize="hasAuthority('CommunicationAfterloan')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 贷后短信管理 </a></li>
+                    </ul>
+                </li>
+
+                <li class="am-panel" sec:authorize="hasAuthority('SlSmallLoanProjectQuery')">
+                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#role-nav'}">
+                        <i class="am-icon-list-ul am-margin-left-sm"></i> 贷款业务查询 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="am-list am-collapse admin-sidebar-sub" id="role-nav">
+                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=7')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 全部贷款业务 </a></li>
+                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=0')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 办理中贷款 </a></li>
+                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=1')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 放款后贷款 </a></li>
+                        <li sec:authorize="hasAuthority('InRepositoryByHeadView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 总部在库查询 </a></li>
+                        <li sec:authorize="hasAuthority('InRepositoryByBranchView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 分行在库查询 </a></li>
+                        <li sec:authorize="hasAuthority('OutboundCustomerListView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 已出库客户清单 </a></li>
+                        <li sec:authorize="hasAuthority('CreditWorkthinessView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> sh资信 </a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 导航栏公共部分 end -->
+</div>
+<!--所属分行下拉-->
+<div class="am-u-sm-12 am-u-md-3 am-form-group" th:fragment="organizing_html">
+    <div class="am-u-sm-4 am-u-md-3">
+        所属分行
+    </div>
+    <div class="am-input-group am-input-group-sm">
+        <select th:name="orgIds" multiple data-am-selected="{btnSize: 'sm',maxHeight: 250}">
+            <option th:each="organizing : ${#authentication.principal.organizingList}"
+                    th:value="${organizing.id}"
+                    th:text="${organizing.name}" th:selected="${orgIds!=null && orgIds.contains(organizing.id)}">分行名称</option>
+        </select>
+    </div>
+</div>
+
+<div class="am-cf" th:fragment="page_html">
+    共 <span th:text="${pageContent.total}">15</span> 条记录
+    <div class="am-fr">
+        <ul class="am-pagination">
+            <li th:class="${pageContent.pageNum == 1}? 'am-disabled' :''"><a href="javascript:" th:href="|javascript:pageFunction(1)|">首页</a></li>
+            <li th:class="${pageContent.hasPreviousPage == false}? 'am-disabled' :''"><a href="javascript:" th:href="|javascript:pageFunction(${pageContent.prePage})|">&laquo;</a></li>
+
+            <li th:if="${pageContent.pageNum>2}">
+                <a href="#" th:text="${pageContent.pageNum -2}" th:href="|javascript:pageFunction(${pageContent.pageNum -2})|">1</a>
+            </li>
+            <li th:if="${pageContent.pageNum>1}">
+                <a href="#" th:text="${pageContent.pageNum -1}" th:href="|javascript:pageFunction(${pageContent.pageNum -1})|">1</a>
+            </li>
+            <li class="am-active">
+                <a href="#" th:text="${pageContent.pageNum}">1</a>
+            </li>
+            <li th:if="${pageContent.pageNum< pageContent.pages}">
+                <a href="#" th:text="${pageContent.pageNum +1}" th:href="|javascript:pageFunction(${pageContent.pageNum +1})|">1</a>
+            </li>
+            <li th:if="${pageContent.pageNum< pageContent.pages -1}">
+                <a href="#" th:text="${pageContent.pageNum +2}" th:href="|javascript:pageFunction(${pageContent.pageNum +2})|">1</a>
+            </li>
+            <li th:class="${pageContent.hasNextPage == false}? 'am-disabled' :''"><a href="javascript:" th:href="|javascript:pageFunction(${pageContent.nextPage})|">&raquo;</a></li>
+            <li th:class="${pageContent.pageNum == pageContent.pages}? 'am-disabled' :''"><a href="javascript:" th:href="|javascript:pageFunction(${pageContent.pages})|">尾页</a></li>
+        </ul>
+    </div>
+</div>
+
+<footer th:fragment="bottom_js">
+    <form method="post" th:id="utilsFormId" th:method="post"></form>
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd" th:text="${warn}" th:id="warnAlert"></div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+<!-- 导航栏公共部分 必须配套导航栏使用-->
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/js/amazeui.min.js" th:src="@{/js/amazeui.min.js}"></script>
+<script src="../static/js/app.js" th:src="@{/js/app.js}"></script>
+<script th:inline="javascript">
+    $(function() {
+        var $modal = $('#my-alert');
+        if([[${warn}]]!=null){
+            $modal.modal();
+        }
+    });
+
+    /**公用的警告框*/
+    function myAlert(textVal){
+        $('#warnAlert').empty();
+        $('#warnAlert').append(textVal);
+        $('#my-alert').modal();
+    }
+
+    /**在js中进行post跳转*/
+    function postSubmit(url,parameter){
+        var $utilsFormId=$("#utilsFormId");
+        $utilsFormId.attr('action', url);
+        if(parameter){
+            $.each(parameter,function(name,value) {
+                $utilsFormId.append($('<input name="'+name+'" type="hidden" value="'+value+'"/>'));// 将input标签放入新创建的form中
+            });
+        }
+        $utilsFormId.submit();
+    }
+
+    /**切换账号*/
+    function switch_account_post(username) {
+        var switch_account_form_id=document.getElementById("switch_account_form_id");
+        $("#username").val(username);
+        switch_account_form_id.submit();
+    }
+
+    /**分页*/
+    function pageFunction(pageNum){
+        $('#pageNum').val(pageNum);
+        obtainForm($('#pageNum')).submit();
+    }
+
+    /**找到父级的form控件*/
+    function obtainForm(element){
+        if(element.parent().is("form")){
+            return element.parent();
+        }else{
+            obtainForm(element.parent());
+        }
+    }
+
+    /**给selected初始化值*/
+    function getSelected($selected,$val){
+        var $o = $selected.find('option[value="'+$val+'"]');
+        if($o.get(0)){
+            $o.attr('selected', !$o.get(0).selected);
+        }
+    }
+</script>
+</footer>
+</body>
+</html>

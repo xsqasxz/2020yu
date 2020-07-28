@@ -1,0 +1,238 @@
+<!doctype html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{utils::admin_head}">
+</head>
+<body>
+<!-- 头部功能部分 start-->
+<header th:insert="~{utils::admin_header}" >
+</header>
+<!-- 头部功能部分 end-->
+
+<div class="am-cf admin-main">
+    <!-- 导航栏公共部分 start -->
+    <div th:insert="~{utils::navigation_bar}"></div>
+    <!-- 导航栏公共部分 end -->
+    <!-- 内容部分 -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><a class="am-text-primary am-text-lg"  href="#" th:onclick="returnUrl()">跟进客户</a> / <small>客户外访详情</small></div>
+        </div>
+        <div class="am-g">
+            <form th:action="@{/ovr/editOutVisitRecord}" th:method="post" th:id="editOutVisitRecordForm">
+                <input th:name="pageNum" th:id="pageNum" th:value="${pageContent.pageNum}" type="hidden" >
+                <input th:name="pageSize" th:id="pageSize" th:value="${pageContent.pageSize}" type="hidden" >
+                <input type="hidden" th:name="outVisitRecordId" th:id="outVisitRecordId" th:value="${outVisitRecord.id}">
+                <input type="hidden" th:name="personId" th:id="personId" th:value="${outVisitRecord.personId}">
+                <input type="hidden" th:name="projectId" th:id="projectId" th:value="${outVisitRecord.projectId}">
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        地址
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" class="am-form-field" th:name="addressType" th:id="addressType" th:if="${!outVisitRecord.isNew}" disabled>
+                        <select data-am-selected="{btnSize: 'sm',maxHeight: 250}" th:name="addressType" th:id="addressType" th:if="${outVisitRecord.isNew}">
+                            <option value="0">现居住地详址</option>
+                            <option value="1">房产详址</option>
+                            <option value="2">单位详址</option>
+                            <option value="3">经营地详址</option>
+                            <option value="4">配偶单位详址</option>
+                            <option value="5">联系人家庭住址</option>
+                            <option value="6">户籍住址</option>
+                            <option value="7">其他资料</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        详址
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" th:name="detailedAddress" class="am-form-field" th:value="${outVisitRecord.detailedAddress}" th:disabled="${!outVisitRecord.isNew}">
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">地址状态</div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" class="am-form-field" th:name="addressState" th:id="addressState" th:if="${!outVisitRecord.isNew}" disabled>
+                        <select data-am-selected="{btnSize: 'sm',maxHeight: 250}" th:name="addressState" th:id="addressState" th:if="${outVisitRecord.isNew}">
+                            <option value="0">未确定</option>
+                            <option value="1">有效地址</option>
+                            <option value="2">无效地址</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        单位名称
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" th:name="unitname" class="am-form-field" th:value="${outVisitRecord.unitname}" th:disabled="${!outVisitRecord.isNew}">
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        来源
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" th:name="source" class="am-form-field" th:value="${outVisitRecord.source}" th:disabled="${!outVisitRecord.isNew}">
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+                    <button class="am-btn am-btn-default" type="button" th:onclick="addPhoneUrgeRecord()"><span class="am-icon-plus"></span>新增</button>
+                    <button class="am-btn am-btn-default" type="button" th:if="${outVisitRecord.isNew}" th:onclick="saveOutVisitRecord()">保存</button>
+                </div>
+            </form>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th>外访时间</th>
+                        <th>外访人</th>
+                        <th>外访内容</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-click" th:each="outVisitDetail : ${pageContent.list}">
+                        <td th:text="${#dates.format(outVisitDetail.visitDate, 'yyyy-MM-dd HH:mm:ss')}" class="am-text-nowrap">外访时间</td>
+                        <td th:text="${T(com.small.constant.RedisUtilsData).getUserName(outVisitDetail.visitId)}" class="am-text-nowrap">外访人</td>
+                        <td th:text="${outVisitDetail.visitContent}">外访内容</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer th:insert="~{utils::page_html}"></footer>
+                <hr/>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="visit_content_text">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加外访内容</div>
+            <div class="am-modal-bd">
+                <div class="am-g am-margin-top-sm">
+                    <textarea rows="4" placeholder="外访内容" style="width: 100%" class="am-modal-prompt-input"></textarea>
+                </div>
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            </div>
+        </div>
+    </div>
+    <!-- content end -->
+</div>
+<!--底部js引入-->
+<footer th:insert="~{utils::bottom_js}"/>
+<script th:inline="javascript">
+    var $loanType = [[${loanType}]];
+
+    $(function() {
+        var $addressState = [[${outVisitRecord.addressState}]];
+        var $addressType = [[${outVisitRecord.addressType}]];
+        if([[${outVisitRecord.isNew}]]){
+            /**默认给下拉框初始值*/
+            getSelected($('#addressState'),$addressState);
+            getSelected($('#addressType'),$addressType);
+        }else{
+            switch ($addressState){
+                case 0:
+                    $('#addressState').val('未确定');
+                    break;
+                case 1:
+                    $('#addressState').val('有效地址');
+                    break;
+                case 2:
+                    $('#addressState').val('无效地址');
+                    break;
+            }
+            switch ($addressType){
+                case 0:
+                    $('#addressType').val('现居住地详址');
+                    break;
+                case 1:
+                    $('#addressType').val('房产详址');
+                    break;
+                case 2:
+                    $('#addressType').val('单位详址');
+                    break;
+                case 3:
+                    $('#addressType').val('经营地详址');
+                    break;
+                case 4:
+                    $('#addressType').val('配偶单位详址');
+                    break;
+                case 5:
+                    $('#addressType').val('联系人家庭住址');
+                    break;
+                case 6:
+                    $('#addressType').val('户籍住址');
+                    break;
+                case 7:
+                    $('#addressType').val('其他资料');
+                    break;
+            }
+        }
+    });
+
+    /**保存数据*/
+    function saveOutVisitRecord(){
+        $.post("/ovr/saveOutVisitRecord/"+$loanType,
+            $("#editOutVisitRecordForm").serialize(),
+            function(result){
+                if(result && result.hasOwnProperty("success")){
+                    if(result.success){
+                        $("#outVisitRecordId").val(result.data);
+                        myAlert(result.ok);
+                    }else{
+                        myAlert(result.error);
+                    }
+                }else{
+                    myAlert("保存异常，请重新尝试添加！");
+                }
+            });
+    }
+
+    /**
+     * 添加电催内容
+     */
+    function addPhoneUrgeRecord(){
+        var $outVisitRecordId = $("#outVisitRecordId").val();
+        var $projectId = $("#projectId").val();
+        if($outVisitRecordId){
+            $('#visit_content_text').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    $.post("/ovr/addOutVisitDetail/"+$loanType,
+                        {outVisitRecordId:$outVisitRecordId,
+                            projectId:$projectId,
+                            contactContent:e.data},
+                        function(result){
+                            if(result && result.hasOwnProperty("success")){
+                                if(result.success){
+                                    postSubmit("/ovr/editOutVisitRecord/"+$loanType,{outVisitRecordId:$outVisitRecordId});
+                                }else{
+                                    myAlert(result.error);
+                                }
+                            }else{
+                                myAlert("添加异常，请重新尝试添加！");
+                            }
+                    });
+                }
+            });
+        }else{
+         myAlert("请先添加联系人后在添加评论");
+        }
+    }
+
+    /**返回跟进*/
+    function returnUrl(){
+        var $projectId = $("#projectId").val();
+        if($projectId){
+            postSubmit("/loan/loanCustomerDetails/"+$loanType,{projectId:$projectId,typeContent:'outVisit'});
+        }
+    }
+</script>
+</body>
+</html>
