@@ -15,7 +15,7 @@
 <!-- 头部功能部分 start-->
 <header class="am-topbar admin-header" th:fragment="admin_header">
     <div class="am-topbar-brand">
-        <strong sec:authentication="principal.newPositionName">当前岗位</strong> <small sec:authentication="name">登录帐号</small>
+        <strong sec:authentication="principal.abilityName">当前岗位</strong> <small sec:authentication="name">登录帐号</small>
     </div>
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
@@ -28,7 +28,7 @@
                         <span class="am-icon-users"></span>切换帐号<span class="am-icon-caret-down"></span>
                     </a>
                     <ul class="am-dropdown-content">
-                        <li th:each="newPosition : ${#authentication.principal.newPositionList}"><a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.username}')|"><span class="am-icon-user"></span><span th:text="${newPosition.name}">岗位名称</span></a></li>
+                        <li th:each="newPosition : ${#authentication.principal.afterAbilitieList}"><a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.username}')|"><span class="am-icon-user"></span><span th:text="${newPosition.name}">岗位名称</span></a></li>
                     </ul>
                 </li>
                 <li>
@@ -81,6 +81,17 @@
                         <li sec:authorize="hasAuthority('InRepositoryByBranchView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 分行在库查询 </a></li>
                         <li sec:authorize="hasAuthority('OutboundCustomerListView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 已出库客户清单 </a></li>
                         <li sec:authorize="hasAuthority('CreditWorkthinessView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> sh资信 </a></li>
+                    </ul>
+                </li>
+
+                <li class="am-panel">
+                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#authority-nav'}">
+                        <i class="am-margin-left-sm"></i><img th:src="@{../image/icon/quanxianguanli.png}"> 权限设置 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    </a>
+                    <ul class="am-list am-collapse admin-sidebar-sub" id="authority-nav" th:class="${parentNode eq 'after'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" >
+                        <li><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{../image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
+                        <li><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{../image/icon/gangweiguanli.png}">岗位管理 </a></li>
+                        <li><a href="#" th:href="@{/after/afterPower}"><img th:src="@{../image/icon/urldizguanli.png}"> 功能管理 </a></li>
                     </ul>
                 </li>
             </ul>

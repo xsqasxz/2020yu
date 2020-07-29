@@ -1,5 +1,6 @@
 package com.small.mapper.after;
 
+import com.small.dto.after.AfterPowerDto;
 import com.small.entity.after.AfterPower;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface AfterPowerMapper extends Mapper<AfterPower> {
     List<AfterPower> selectAfterPowerByAbilityId(Integer abilityId);
+
+    List<AfterPower> getAfterPower(AfterPowerDto afterPowerDto);
 }

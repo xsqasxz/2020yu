@@ -10,4 +10,22 @@
         from after_power p inner join after_ability_power ap on p.id = ap.after_power_id
         where ap.after_ability_id = #{abilityId}
     </select>
+
+    <select id="getAfterPower" resultType="com.small.entity.after.AfterPower" parameterType="com.small.dto.after.AfterPowerDto">
+        select
+          p.id,
+          p.power_name as authority,
+          p.power_level as powerLevel,
+          p.power_url as powerUrl
+        from after_power p
+        <where>
+            <if test="authority!=null">
+                and p.power_name = #{authority}
+            </if>
+            <if test="powerUrl!=null">
+                and p.power_url like '${powerUrl}%'
+            </if>
+        </where>
+        order by p.id desc
+    </select>
 </mapper>

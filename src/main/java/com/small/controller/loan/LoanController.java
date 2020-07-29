@@ -1,5 +1,6 @@
 package com.small.controller.loan;
 
+import com.small.constant.UtilsConstant;
 import com.small.dto.loan.LoanCustomerDto;
 import com.small.dto.loan.LoanDto;
 import com.small.entity.JsonResponse;
@@ -53,7 +54,7 @@ public class LoanController {
         //回显分行使用
         model.addAttribute("orgIds",loanDto.getOrgIds());
         //公用参数，用于传入是那个模块点击的
-        OrgUtil.getModel(model);
+        OrgUtil.getModel(model,UtilsConstant.LOAN);
         return "loan/headLoanManage";
     }
 
@@ -70,7 +71,7 @@ public class LoanController {
         //回显分行使用
         model.addAttribute("orgIds",loanDto.getOrgIds());
         //公用参数，用于传入是那个模块点击的
-        OrgUtil.getModel(model);
+        OrgUtil.getModel(model,UtilsConstant.LOAN);
         return "loan/branchLoanManage";
     }
 
@@ -87,7 +88,7 @@ public class LoanController {
         //回显分行使用
         model.addAttribute("orgIds",loanDto.getOrgIds());
         //公用参数，用于传入是那个模块点击的
-        OrgUtil.getModel(model);
+        OrgUtil.getModel(model,UtilsConstant.LOAN);
         return "loan/recycleLoanManage";
     }
 
@@ -113,7 +114,7 @@ public class LoanController {
             model.addAttribute("followUpCommentList", followUpCommentService.findByFollowUpCommentList(projectId));
         }
         //公用参数，用于传入是那个模块点击的
-        OrgUtil.getModel(model);
+        OrgUtil.getModel(model,UtilsConstant.LOAN);
         return "loan/loanCustomerDetails";
     }
 

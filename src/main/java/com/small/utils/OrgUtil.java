@@ -55,8 +55,8 @@ public class OrgUtil {
      * 公用参数，用于传入是那个模块点击的
      * @param model
      */
-    public static void getModel(Model model){
+    public static void getModel(Model model,String parentNode){
         //公用参数，用于传入是那个模块点击的
-        model.addAttribute("parentNode","loan");
+        model.addAttribute("parentNode",parentNode);
     }
 }

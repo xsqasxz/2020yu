@@ -4,4 +4,17 @@
     <select id="getUserName" resultType="String">
         select ability_name from after_ability where id = #{userId} limit 1
     </select>
+
+    <select id="getAfterUser" resultType="com.small.entity.after.AfterUser" parameterType="com.small.dto.after.AfterUserDto">
+        select a.id,a.user_name as userName,a.user_effective as userEffective,a.ability_id as abilityId from after_user a
+        <where>
+            <if test="userEffective!=null">
+                and a.user_effective = #{userEffective}
+            </if>
+            <if test="userName!=null">
+                and a.user_name like '${userName}%'
+            </if>
+        </where>
+        order by a.id desc
+    </select>
 </mapper>

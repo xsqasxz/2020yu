@@ -1,5 +1,6 @@
 package com.small.controller.repayment;
 
+import com.small.constant.UtilsConstant;
 import com.small.dto.repayment.RemindDto;
 import com.small.service.repayment.RemindService;
 import com.small.utils.OrgUtil;
@@ -43,7 +44,7 @@ public class RepaymentItemController {
             model.addAttribute("pageContent",remindService.getRemind(remindDto));
         }
         //公用参数，用于传入是那个模块点击的
-        OrgUtil.getModel(model);
+        OrgUtil.getModel(model,UtilsConstant.LOAN);
         return "repayment/remind";
     }
 

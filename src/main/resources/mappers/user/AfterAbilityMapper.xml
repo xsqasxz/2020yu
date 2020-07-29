@@ -9,4 +9,21 @@
         from after_ability a inner join after_user_ability ua on a.id = ua.after_ability_id
         where ua.after_user_id = #{userId}
     </select>
+
+    <select id="getAfterAbility" resultType="com.small.entity.after.AfterAbility" parameterType="com.small.dto.after.AfterAbilityDto">
+        select
+          a.id,
+          a.ability_name as abilityName,
+          a.ability_effective as abilityEffective
+        from after_ability a
+        <where>
+            <if test="abilityName !=null">
+                and a.ability_name like '%${abilityName}%'
+            </if>
+            <if test="abilityEffective !=null">
+                and a.ability_effective = #{abilityEffective}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
 </mapper>

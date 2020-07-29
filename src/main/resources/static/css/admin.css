@@ -356,3 +356,7 @@ gallery.html css
 .fixed-layout .admin-sidebar.am-active {
   z-index: 1600;
 }
+
+.am-icon-gangweiguanli:before {
+  background-image: url("../image/icon/gangweiguanli.png") !important;
+}
