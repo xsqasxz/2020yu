@@ -23,7 +23,8 @@
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default" th:onclick="view_signing()"><span class="am-icon-list-alt"></span>添加</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
                 </div>
             </div>
             <form th:action="@{/after/afterUser}" th:method="post">
@@ -61,18 +62,28 @@
                 <table class="am-table am-table-striped am-table-hover table-main">
                     <thead>
                     <tr>
-                        <th class="table-check"></th>
+                        <th class="table-check"><input type="checkbox" /></th>
                         <th class="table-userName">帐号</th>
                         <th class="table-userEffective">是否有效</th>
                         <th class="table-abilityId">默认岗位</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each ="afterUser : ${pageContent.list}" class="table-click">
-                        <td><input type="radio" th:name="afterUserId" th:value="${afterUser.id}"/></td>
+                        <td class="table-check"><input type="checkbox" th:name="afterUserId" th:value="${afterUser.id}"/></td>
                         <td class="table-userName" th:text="${afterUser.userName}">帐号</td>
                         <td class="table-userEffective" th:text="${afterUser.userEffective?'否':'是'}">是否有效</td>
                         <td class="table-abilityId" th:text="${afterUser.abilityId}">默认岗位</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-warning refresh-button" th:value="${afterUser.id}"><span class="am-icon-refresh"></span> 重置密码</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -83,9 +94,28 @@
     </div>
     <!-- content end -->
 </div>
+
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
+    $(document).ready(function(){
+        //afterUserId
+        $(".refresh-button").click(function(){
+            let afterUserId = $(this).val();
+            myPrompt("请输入需要重置的密码",function(resetPassword){
+                $.post("/after/resetPassword",{
+                        resetPassword:resetPassword,
+                        afterUserId:afterUserId
+                    },function(data){
+                        if(data.success){
+                            myAlert(data.ok);
+                        }else{
+                            myAlert(data.error);
+                        }
+                    });
+            })
+        });
+    });
     /**给这个页面添加选中点击表格的名称为projectId的单选*/
     $('body').on('click', '.table-click', function () {
         $(this).find("input[name='projectId']").prop("checked",true);

@@ -2,6 +2,7 @@ package com.small.controller.after;
 
 import com.small.constant.UtilsConstant;
 import com.small.dto.after.AfterUserDto;
+import com.small.entity.JsonResponse;
 import com.small.service.after.AfterUserService;
 import com.small.utils.OrgUtil;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -38,5 +40,17 @@ public class AfterUserController {
         //公用参数，用于传入是那个模块点击的
         OrgUtil.getModel(model,UtilsConstant.AFTER);
         return "after/afterUser";
+    }
+
+    /**
+     * 重置密码
+     * @param afterUserDto
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/resetPassword")
+    public JsonResponse resetPassword(@Valid AfterUserDto afterUserDto){
+        logger.debug("重置密码传入参数：{}", afterUserDto);
+        return afterUserService.resetPassword(afterUserDto);
     }
 }

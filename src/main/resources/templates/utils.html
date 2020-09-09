@@ -152,67 +152,43 @@
             </div>
         </div>
     </div>
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd" th:id="warnConfirm"></div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            </div>
+        </div>
+    </div>
+    <!-- 询问框 start-->
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                <div class="am-modal-bd" th:id="warnPrompt"></div>
+                <input type="text" class="am-modal-prompt-input">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            </div>
+        </div>
+    </div>
+    <!-- 询问框 end-->
 <!-- 导航栏公共部分 必须配套导航栏使用-->
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
 <script src="../static/js/amazeui.min.js" th:src="@{/js/amazeui.min.js}"></script>
 <script src="../static/js/app.js" th:src="@{/js/app.js}"></script>
-<script th:inline="javascript">
+<script th:inline="javascript" th:src="@{/js/custom/utils.js}">
     $(function() {
         var $modal = $('#my-alert');
         if([[${warn}]]!=null){
             $modal.modal();
         }
     });
-
-    /**公用的警告框*/
-    function myAlert(textVal){
-        $('#warnAlert').empty();
-        $('#warnAlert').append(textVal);
-        $('#my-alert').modal();
-    }
-
-    /**在js中进行post跳转*/
-    function postSubmit(url,parameter){
-        var $utilsFormId=$("#utilsFormId");
-        $utilsFormId.attr('action', url);
-        if(parameter){
-            $.each(parameter,function(name,value) {
-                $utilsFormId.append($('<input name="'+name+'" type="hidden" value="'+value+'"/>'));// 将input标签放入新创建的form中
-            });
-        }
-        $utilsFormId.submit();
-    }
-
-    /**切换账号*/
-    function switch_account_post(username) {
-        var switch_account_form_id=document.getElementById("switch_account_form_id");
-        $("#username").val(username);
-        switch_account_form_id.submit();
-    }
-
-    /**分页*/
-    function pageFunction(pageNum){
-        $('#pageNum').val(pageNum);
-        obtainForm($('#pageNum')).submit();
-    }
-
-    /**找到父级的form控件*/
-    function obtainForm(element){
-        if(element.parent().is("form")){
-            return element.parent();
-        }else{
-            obtainForm(element.parent());
-        }
-    }
-
-    /**给selected初始化值*/
-    function getSelected($selected,$val){
-        var $o = $selected.find('option[value="'+$val+'"]');
-        if($o.get(0)){
-            $o.attr('selected', !$o.get(0).selected);
-        }
-    }
 </script>
 </footer>
 </body>
