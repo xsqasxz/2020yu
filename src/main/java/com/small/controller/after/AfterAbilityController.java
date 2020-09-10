@@ -2,6 +2,7 @@ package com.small.controller.after;
 
 import com.small.constant.UtilsConstant;
 import com.small.dto.after.AfterAbilityDto;
+import com.small.entity.JsonResponse;
 import com.small.service.after.AfterAbilityService;
 import com.small.utils.OrgUtil;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -38,5 +40,16 @@ public class AfterAbilityController {
         //公用参数，用于传入是那个模块点击的
         OrgUtil.getModel(model,UtilsConstant.AFTER);
         return "after/afterAbility";
+    }
+
+    /**
+     * 添加岗位
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addAfterAbility")
+    public JsonResponse addAfterAbility(@Valid AfterAbilityDto afterAbilityDto){
+        logger.debug("添加岗位传入参数：{}", afterAbilityDto);
+        return afterAbilityService.addAfterAbility(afterAbilityDto);
     }
 }

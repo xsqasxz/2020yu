@@ -25,5 +25,5 @@ public class AfterAbility {
     /**岗位名称*/
     private String abilityName;
     /**是否有效*/
-    private String abilityEffective;
+    private Boolean abilityEffective;
 }

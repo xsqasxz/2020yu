@@ -19,4 +19,11 @@ public interface AfterUserService {
      * @return
      */
     JsonResponse resetPassword(AfterUserDto afterUserDto);
+
+    /**
+     * 添加帐号
+     * @param afterUserDto
+     * @return
+     */
+    JsonResponse addAfterUser(AfterUserDto afterUserDto);
 }

@@ -18,8 +18,10 @@ public class AfterPowerDto extends PageDto {
     @Size(max = 30,message = "URL地址长度不可以超过30位")
     private String powerUrl;
     /**别名*/
-    @Size(max = 5,message = "别名长度不可以超过5")
+    @Size(max = 15,message = "别名长度不可以超过15")
     private String authority;
+
+    private Integer afterPowerId;
 
     public static void getAfterPowerDto(AfterPowerDto afterAbilityDto){
         if(StringUtils.isBlank(afterAbilityDto.getAuthority())){

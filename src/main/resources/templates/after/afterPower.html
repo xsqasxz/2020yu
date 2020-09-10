@@ -23,8 +23,8 @@
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default" th:onclick="view_signing()"><span class="am-icon-list-alt"></span>查看签约界面</button>
-                    <button type="button" class="am-btn am-btn-default" th:onclick="customer_details()"><span class="am-icon-tasks"></span>跟进</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
                 </div>
             </div>
             <form th:action="@{/after/afterPower}" th:method="post">
@@ -58,16 +58,23 @@
                 <table class="am-table am-table-striped am-table-hover table-main">
                     <thead>
                     <tr>
-                        <th class="table-check"></th>
                         <th class="table-authority">名称</th>
                         <th class="table-powerUrl">URL地址</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each ="afterPower : ${pageContent.list}" class="table-click">
-                        <td><input type="radio" th:name="afterPowerId" th:value="${afterPower.id}"/></td>
                         <td class="table-authority" th:text="${afterPower.authority}">名称</td>
                         <td class="table-powerUrl" th:text="${afterPower.powerUrl}">URL地址</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary js-modal-open" th:value="${afterPower.id}"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,31 +85,83 @@
     </div>
     <!-- content end -->
 </div>
+<div class="am-popup" id="my-add-after-power">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">功能详情</h4>
+            <span data-am-modal-close class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <form action="" class="am-form" id="doc-vld-msg" data-am-validator>
+                <input type="hidden" id="afterPowerId"/>
+                <fieldset>
+                    <div class="am-form-group">
+                        <label for="authority">功能名称：</label>
+                        <input type="text" id="authority" minlength="3"
+                               placeholder="输入用户名（至少 3 个字符）" required/>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="powerUrl">url地址：</label>
+                        <input type="text" id="powerUrl" minlength="3"
+                               placeholder="输入用户名（至少 3 个字符）" required/>
+                    </div>
+                    <button class="am-btn am-btn-secondary js-after-power-submit" type="button">提交</button>
+                    <button class="am-btn js-modal-close" type="button">关闭</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
-    /**给这个页面添加选中点击表格的名称为projectId的单选*/
-    $('body').on('click', '.table-click', function () {
-        $(this).find("input[name='projectId']").prop("checked",true);
-    });
-    /**
-     * 查看签约界面
-     */
-    function view_signing(){
-        myAlert("技术人员紧急开发中，敬请期待！")
-    }
+    $(function() {
+        var $modal = $('#my-add-after-power');
+        var clickTr;
+        /**重置密码*/
+        $(".js-modal-open").click(function(){
+            clickTr = this;
+            let afterPowerId = $(this).val();
+            let authority = $(this).parents("tr").children("td.table-authority").html();
+            let powerUrl = $(this).parents("tr").children("td.table-powerUrl").html();
+            $("#afterPowerId").val(afterPowerId);
+            $("#authority").val(authority);
+            $("#powerUrl").val(powerUrl);
+            $modal.modal();
+        });
 
-    /**
-     * 跟进客户
-     */
-    function customer_details(){
-        var $projectId = $("input[name='projectId']:checked").val();
-        if($projectId){
-            postSubmit("/loan/loanCustomerDetails/recycle",{projectId:$projectId});
-        }else{
-            myAlert("请选择一条数据！")
-        }
-    }
+        $modal.find('.am-btn').on('click', function(e) {
+            var $target = $(e.target);
+            if (($target).hasClass('js-modal-close')) {
+                //关闭添加窗口
+                $("#afterPowerId").val('');
+                $("#powerUrl").val('');
+                $("#authority").val('');
+                $modal.modal('close');
+            }else if(($target).hasClass('js-after-power-submit')){
+                let afterPowerId = $("#afterPowerId").val();
+                let authority = $("#authority").val();
+                let powerUrl = $("#powerUrl").val();
+                $.post("/after/updateAfterPower",{
+                    afterPowerId:afterPowerId,
+                    authority:authority,
+                    powerUrl:powerUrl
+                },function(data){
+                    if(data.success){
+                        $(clickTr).parents("tr").children("td.table-authority").html(authority);
+                        $(clickTr).parents("tr").children("td.table-powerUrl").html(powerUrl);
+                        $("#afterPowerId").val('');
+                        $("#powerUrl").val('');
+                        $("#authority").val('');
+                        $modal.modal('close');
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            }
+        });
+
+    });
 </script>
 </body>
 </html>

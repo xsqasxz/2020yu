@@ -2,14 +2,15 @@ package com.small.service.after.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.small.constant.AfterState;
 import com.small.dto.after.AfterUserDto;
 import com.small.entity.JsonResponse;
-import com.small.entity.after.AfterPower;
 import com.small.entity.after.AfterUser;
 import com.small.mapper.after.AfterUserMapper;
 import com.small.service.after.AfterUserService;
 import com.small.utils.StringUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 
@@ -34,8 +35,23 @@ public class AfterUserServiceImpl implements AfterUserService {
     public JsonResponse resetPassword(AfterUserDto afterUserDto) {
         AfterUser afterUser = new AfterUser();
         afterUser.setId(afterUserDto.getAfterUserId());
-        afterUser.setUserPassword(StringUtil.encryptSha256(afterUserDto.getResetPassword()));
+        afterUser.setUserPassword(StringUtil.encryptSha256(afterUserDto.getUserPassword()));
         afterUserMapper.updateByPrimaryKeySelective(afterUser);
         return JsonResponse.ok("修改成功！");
+    }
+
+    @Override
+    public JsonResponse addAfterUser(AfterUserDto afterUserDto) {
+        AfterUser afterUser = new AfterUser();
+        afterUser.setUserName(afterUserDto.getUserName());
+        if(CollectionUtils.isEmpty(afterUserMapper.select(afterUser))){
+            afterUser.setUserPassword(StringUtil.encryptSha256(afterUserDto.getUserPassword()));
+            afterUser.setUserEffective(false);
+            afterUser.setAbilityId(AfterState.AFTER_ABILITY);
+            afterUserMapper.insert(afterUser);
+            return JsonResponse.ok("添加成功！");
+        }else{
+            return JsonResponse.error("帐号已存在！");
+        }
     }
 }

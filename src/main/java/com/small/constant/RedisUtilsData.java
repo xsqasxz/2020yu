@@ -2,10 +2,11 @@ package com.small.constant;
 
 import com.small.entity.Dictionary;
 import com.small.entity.Sequences;
+import com.small.entity.after.AfterAbility;
 import com.small.entity.project.BpProductParameter;
 import com.small.mapper.DictionaryMapper;
 import com.small.mapper.SequencesMapper;
-import com.small.mapper.after.AfterUserMapper;
+import com.small.mapper.after.AfterAbilityMapper;
 import com.small.mapper.project.BpProductParameterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,8 +26,8 @@ public class RedisUtilsData {
 
     @Autowired
     private RedisTemplate redisTemplate;
-//    @Resource
-//    private AfterUserMapper afterUserMapper;
+    @Resource
+    private AfterAbilityMapper afterAbilityMapper;
     @Resource
     private BpProductParameterMapper bpProductParameterMapper;
     @Resource
@@ -138,6 +139,13 @@ public class RedisUtilsData {
         }
     }
 
+
+    /**
+     * id预创建
+     * @param table
+     * @param column
+     * @return
+     */
     public static Integer getId(String table, String column){
         if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5SequencesByIdsMap", table)) {
             Integer id = (Integer) redisUtilsData.redisTemplate.opsForHash().get("h5SequencesByIdsMap", table);
@@ -166,5 +174,26 @@ public class RedisUtilsData {
             throw new NullPointerException("数据表中的对应列不可为空！");
         }
     }
+
+
+    public static String getAbilityName(Long abilityId){
+        if(abilityId != null) {
+            String abilityIdString = String.valueOf(abilityId);
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey("yuAbilityNameMap", abilityIdString)) {
+                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get("yuAbilityNameMap", abilityIdString));
+            } else {
+                AfterAbility afterAbility = redisUtilsData.afterAbilityMapper.selectByPrimaryKey(abilityId);
+                if(afterAbility!=null) {
+                    redisUtilsData.redisTemplate.opsForHash().put("yuAbilityNameMap", abilityIdString, afterAbility.getAbilityName());
+                    return afterAbility.getAbilityName();
+                }else{
+                    return null;
+                }
+            }
+        }else{
+            return null;
+        }
+    }
+
 
 }

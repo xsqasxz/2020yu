@@ -2,6 +2,7 @@ package com.small.controller.after;
 
 import com.small.constant.UtilsConstant;
 import com.small.dto.after.AfterPowerDto;
+import com.small.entity.JsonResponse;
 import com.small.service.after.AfterPowerService;
 import com.small.utils.OrgUtil;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -39,4 +41,17 @@ public class AfterPowerController {
         OrgUtil.getModel(model,UtilsConstant.AFTER);
         return "after/afterPower";
     }
+
+    /**
+     * 修改url地址和权限名称
+     * @param afterPowerDto
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateAfterPower")
+    public JsonResponse updateAfterPower(@Valid AfterPowerDto afterPowerDto){
+        logger.debug("添加用户传入参数：{}", afterPowerDto);
+        return afterPowerService.updateAfterPower(afterPowerDto);
+    }
+
 }

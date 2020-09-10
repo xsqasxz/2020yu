@@ -17,11 +17,11 @@ public class AfterUserDto extends PageDto {
     /**是否有效*/
     private Boolean userEffective;
     /**用户名*/
-    @Size(max = 5,message = "用户名长度不可以超过5")
+    @Size(max = 20,message = "用户名长度不可以超过20")
     private String userName;
     /**密码*/
     @Size(min = 5,max = 20,message = "用户密码在5-20位之间")
-    private String resetPassword;
+    private String userPassword;
     /**用户id*/
     private Integer afterUserId;
 

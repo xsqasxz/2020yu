@@ -23,8 +23,8 @@
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default" th:onclick="view_signing()"><span class="am-icon-list-alt"></span>查看签约界面</button>
-                    <button type="button" class="am-btn am-btn-default" th:onclick="customer_details()"><span class="am-icon-tasks"></span>跟进</button>
+                    <button type="button" class="am-btn am-btn-default js-add-after-ability"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
                 </div>
             </div>
             <form th:action="@{/after/afterAbility}" th:method="post">
@@ -65,6 +65,7 @@
                         <th class="table-check"></th>
                         <th class="table-abilityName">岗位名称</th>
                         <th class="table-abilityEffective">是否有效</th>
+                        <th class="table-abilityEffective">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -72,6 +73,14 @@
                         <td><input type="radio" th:name="afterAbilityId" th:value="${afterAbility.id}"/></td>
                         <td class="table-abilityName" th:text="${afterAbility.abilityName}">岗位名称</td>
                         <td class="table-abilityEffective" th:text="${afterAbility.abilityEffective?'否':'是'}">是否有效</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary js-modal-open" th:value="${afterAbility.id}"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -85,28 +94,23 @@
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
-    /**给这个页面添加选中点击表格的名称为projectId的单选*/
-    $('body').on('click', '.table-click', function () {
-        $(this).find("input[name='projectId']").prop("checked",true);
+    $(function() {
+        /**添加岗位*/
+        $(".js-add-after-ability").click(function(){
+            myPrompt("请输入新的岗位名称",function(abilityName){
+                $.post("/after/addAfterAbility",{
+                    abilityName:abilityName
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                        location.reload();
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            })
+        });
     });
-    /**
-     * 查看签约界面
-     */
-    function view_signing(){
-        myAlert("技术人员紧急开发中，敬请期待！")
-    }
-
-    /**
-     * 跟进客户
-     */
-    function customer_details(){
-        var $projectId = $("input[name='projectId']:checked").val();
-        if($projectId){
-            postSubmit("/loan/loanCustomerDetails/recycle",{projectId:$projectId});
-        }else{
-            myAlert("请选择一条数据！")
-        }
-    }
 </script>
 </body>
 </html>

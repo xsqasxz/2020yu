@@ -53,4 +53,16 @@ public class AfterUserController {
         logger.debug("重置密码传入参数：{}", afterUserDto);
         return afterUserService.resetPassword(afterUserDto);
     }
+
+    /**
+     * 添加用户帐号
+     * @param afterUserDto
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addAfterUser")
+    public JsonResponse addAfterUser(@Valid AfterUserDto afterUserDto){
+        logger.debug("添加用户传入参数：{}", afterUserDto);
+        return afterUserService.addAfterUser(afterUserDto);
+    }
 }

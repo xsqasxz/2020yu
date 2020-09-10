@@ -23,7 +23,7 @@
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default" data-am-modal="{target: '#my-add-after-user'}"><span class="am-icon-plus"></span> 新增</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
                 </div>
             </div>
@@ -74,11 +74,11 @@
                         <td class="table-check"><input type="checkbox" th:name="afterUserId" th:value="${afterUser.id}"/></td>
                         <td class="table-userName" th:text="${afterUser.userName}">帐号</td>
                         <td class="table-userEffective" th:text="${afterUser.userEffective?'否':'是'}">是否有效</td>
-                        <td class="table-abilityId" th:text="${afterUser.abilityId}">默认岗位</td>
+                        <td class="table-abilityId" th:text="${T(com.small.constant.RedisUtilsData).getAbilityName(afterUser.abilityId)}">默认岗位</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-secondary js-update-after-user" th:value="${afterUser.id}"><span class="am-icon-pencil-square-o"></span> 编辑</button>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-warning refresh-button" th:value="${afterUser.id}"><span class="am-icon-refresh"></span> 重置密码</button>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
                                 </div>
@@ -95,49 +95,122 @@
     <!-- content end -->
 </div>
 
+<div class="am-popup" id="my-add-after-user">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">添加帐号</h4>
+            <span data-am-modal-close class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <form action="" class="am-form" id="doc-vld-msg" data-am-validator>
+                <fieldset>
+                    <div class="am-form-group">
+                        <label for="userName">用户名：</label>
+                        <input type="text" id="userName" minlength="3"
+                               placeholder="输入用户名（至少 3 个字符）" required/>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="userPassword">密码：</label>
+                        <input type="password" id="userPassword" placeholder="请输入6-20位大小写.@!#$%^&*()密码" pattern="^([a-zA-Z0-9\.\@\!\#\$\%\^\&\*\(\)]){6,20}$" required/>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="userPassword2">确认密码：</label>
+                        <input type="password" id="userPassword2" placeholder="请输入6-20位大小写.@!#$%^&*()密码" pattern="^([a-zA-Z0-9\.\@\!\#\$\%\^\&\*\(\)]){6,20}$" data-equal-to="#userPassword" required/>
+                    </div>
+
+                    <button class="am-btn am-btn-secondary js-after-user-submit" type="button">提交</button>
+                    <button class="am-btn js-modal-close" type="button">关闭</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="am-popup" id="after-user-and-after-ability">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">添加帐号</h4>
+            <span data-am-modal-close class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <form action="" class="am-form">
+                <fieldset>
+                    <div class="am-form-group">
+                        <label class="am-checkbox-inline">
+                            <input type="checkbox"  value="" data-am-ucheck> iPhone
+                        </label>
+                        <label class="am-checkbox-inline">
+                            <input type="checkbox"  value="" data-am-ucheck> iMac
+                        </label>
+                        <label class="am-checkbox-inline">
+                            <input type="checkbox"  value="" data-am-ucheck> Macbook
+                        </label>
+                    </div>
+                    <button class="am-btn am-btn-secondary js-after-user-submit" type="button">提交</button>
+                    <button class="am-btn js-modal-close" type="button">关闭</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
-    $(document).ready(function(){
-        //afterUserId
+    $(function() {
+        var $modal = $('#my-add-after-user');
+        var $userAbilityModal = $('#after-user-and-after-ability');
+        $modal.find('.am-btn').on('click', function(e) {
+            var $target = $(e.target);
+            if (($target).hasClass('js-modal-close')) {
+                //关闭添加窗口
+                $("#userName").val('');
+                $("#userPassword").val('');
+                $("#userPassword2").val('');
+                $modal.modal('close');
+            }else if(($target).hasClass('js-after-user-submit')){
+                let userName = $("#userName").val();
+                let userPassword = $("#userPassword").val();
+                $.post("/after/addAfterUser",{
+                    userPassword:userPassword,
+                    userName:userName
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                        $modal.modal('close');
+                        location.reload();
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            }
+        });
+
+        /**编辑用户*/
+        $(".js-update-after-user").click(function(){
+            let afterUserId = $(this).val();
+            $userAbilityModal.modal();
+            //异步请求数据
+        });
+
+        /**重置密码*/
         $(".refresh-button").click(function(){
             let afterUserId = $(this).val();
-            myPrompt("请输入需要重置的密码",function(resetPassword){
+            myPrompt("请输入需要重置的密码",function(userPassword){
                 $.post("/after/resetPassword",{
-                        resetPassword:resetPassword,
-                        afterUserId:afterUserId
-                    },function(data){
-                        if(data.success){
-                            myAlert(data.ok);
-                        }else{
-                            myAlert(data.error);
-                        }
-                    });
+                    userPassword:userPassword,
+                    afterUserId:afterUserId
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
             })
         });
-    });
-    /**给这个页面添加选中点击表格的名称为projectId的单选*/
-    $('body').on('click', '.table-click', function () {
-        $(this).find("input[name='projectId']").prop("checked",true);
-    });
-    /**
-     * 查看签约界面
-     */
-    function view_signing(){
-        myAlert("技术人员紧急开发中，敬请期待！")
-    }
 
-    /**
-     * 跟进客户
-     */
-    function customer_details(){
-        var $projectId = $("input[name='projectId']:checked").val();
-        if($projectId){
-            postSubmit("/loan/loanCustomerDetails/recycle",{projectId:$projectId});
-        }else{
-            myAlert("请选择一条数据！")
-        }
-    }
+    });
 </script>
 </body>
 </html>
