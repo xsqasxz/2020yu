@@ -3,6 +3,7 @@ package com.small.entity.after;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author xueshiqi
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name="after_ability")
-public class AfterAbility {
+public class AfterAbility implements Serializable {
     /**
      * @Table即数据表表名
      * @Column即列名

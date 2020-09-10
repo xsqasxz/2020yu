@@ -52,4 +52,16 @@ public class AfterAbilityController {
         logger.debug("添加岗位传入参数：{}", afterAbilityDto);
         return afterAbilityService.addAfterAbility(afterAbilityDto);
     }
+
+    /**
+     * 返回异步刷新页面请求
+     * @param model
+     * @return
+     */
+    @RequestMapping("/allAfterAbility")
+    public String allAfterAbility(Model model){
+        model.addAttribute("allAfterAbility",afterAbilityService.allAfterAbility());
+        //这里直接从缓存中取得就好了
+        return "after/afterUser::afterUserAbilityAjax";
+    }
 }

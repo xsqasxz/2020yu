@@ -5,6 +5,8 @@ import com.small.dto.after.AfterAbilityDto;
 import com.small.entity.JsonResponse;
 import com.small.entity.after.AfterAbility;
 
+import java.util.List;
+
 /**
  * @author xueshiqi
  * @since 2020/7/29
@@ -19,4 +21,10 @@ public interface AfterAbilityService {
      * @return
      */
     JsonResponse addAfterAbility(AfterAbilityDto afterAbilityDto);
+
+    /**
+     * 查询全部的岗位
+     * @return
+     */
+    List<AfterAbility> allAfterAbility();
 }

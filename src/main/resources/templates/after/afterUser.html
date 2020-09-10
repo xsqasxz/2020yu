@@ -136,18 +136,13 @@
         <div class="am-popup-bd">
             <form action="" class="am-form">
                 <fieldset>
-                    <div class="am-form-group">
-                        <label class="am-checkbox-inline">
-                            <input type="checkbox"  value="" data-am-ucheck> iPhone
-                        </label>
-                        <label class="am-checkbox-inline">
-                            <input type="checkbox"  value="" data-am-ucheck> iMac
-                        </label>
-                        <label class="am-checkbox-inline">
-                            <input type="checkbox"  value="" data-am-ucheck> Macbook
+                    <input type="hidden" th:id="afterUserId">
+                    <div class="am-form-group" id="after-ability-ajax" th:fragment="afterUserAbilityAjax">
+                        <label class="am-checkbox-inline" th:each ="afterAbility : ${allAfterAbility}" >
+                            <input type="checkbox" th:name="afterAbilityIds" th:value="${afterAbility.id}" data-am-ucheck>[[${afterAbility.abilityName}]]
                         </label>
                     </div>
-                    <button class="am-btn am-btn-secondary js-after-user-submit" type="button">提交</button>
+                    <button class="am-btn am-btn-secondary js-after-ability-ajax-submit" type="button">提交</button>
                     <button class="am-btn js-modal-close" type="button">关闭</button>
                 </fieldset>
             </form>
@@ -158,22 +153,21 @@
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
     $(function() {
-        var $modal = $('#my-add-after-user');
-        var $userAbilityModal = $('#after-user-and-after-ability');
+        const $modal = $('#my-add-after-user');
+        const $userAbilityModal = $('#after-user-and-after-ability');
         $modal.find('.am-btn').on('click', function(e) {
-            var $target = $(e.target);
+            const $target = $(e.target);
             if (($target).hasClass('js-modal-close')) {
+                console.log(15236456)
                 //关闭添加窗口
                 $("#userName").val('');
                 $("#userPassword").val('');
                 $("#userPassword2").val('');
                 $modal.modal('close');
             }else if(($target).hasClass('js-after-user-submit')){
-                let userName = $("#userName").val();
-                let userPassword = $("#userPassword").val();
                 $.post("/after/addAfterUser",{
-                    userPassword:userPassword,
-                    userName:userName
+                    userPassword:$("#userPassword").val(),
+                    userName:$("#userName").val()
                 },function(data){
                     if(data.success){
                         myAlert(data.ok);
@@ -186,20 +180,44 @@
             }
         });
 
+        $userAbilityModal.find('.am-btn').on('click', function(e) {
+            const $target = $(e.target);
+            if (($target).hasClass('js-modal-close')) {
+                $userAbilityModal.modal('close');
+            }else if(($target).hasClass('js-after-ability-ajax-submit')){
+                let $afterAbilityIds ={};
+                let i = 0;
+                $('input[name="afterAbilityIds"]:checked').each(function(){
+                    $afterAbilityIds[i]= $(this).val();
+                    i++;
+                });
+                $.post("/after/updateAfterUserAbilityPower",{
+                    afterUserId:$("#afterUserId").val(),
+                    afterAbilityIds:$afterAbilityIds
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            }
+        });
         /**编辑用户*/
         $(".js-update-after-user").click(function(){
-            let afterUserId = $(this).val();
+            $("#afterUserId").val($(this).val());
             $userAbilityModal.modal();
             //异步请求数据
+            $("#after-ability-ajax").load("/after/allAfterAbility");
         });
 
         /**重置密码*/
         $(".refresh-button").click(function(){
-            let afterUserId = $(this).val();
-            myPrompt("请输入需要重置的密码",function(userPassword){
+            let $afterUserId = $(this).val();
+            myPrompt("请输入需要重置的密码",function($userPassword){
                 $.post("/after/resetPassword",{
-                    userPassword:userPassword,
-                    afterUserId:afterUserId
+                    userPassword:$userPassword,
+                    afterUserId:$afterUserId
                 },function(data){
                     if(data.success){
                         myAlert(data.ok);
