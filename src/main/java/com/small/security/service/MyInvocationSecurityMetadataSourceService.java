@@ -111,7 +111,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
             //如果没找到，就把最后一位替换为*，然后递归进行查找直到全部换为*为止
             String keys = replaceBehind(key);
             if (keys != null) {
-                getUrlMap(replaceBehind(key));
+                return getUrlMap(replaceBehind(key));
             }
             return null;
         }else{

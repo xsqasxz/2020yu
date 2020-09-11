@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Data
 public class AfterPowerDto extends PageDto {
     /**URL地址*/
-    @Size(max = 30,message = "URL地址长度不可以超过30位")
+    @Size(max = 100,message = "URL地址长度不可以超过100位")
     private String powerUrl;
     /**名称*/
     @Size(max = 15,message = "名称长度不可以超过15")
