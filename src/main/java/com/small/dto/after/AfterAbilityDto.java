@@ -19,6 +19,8 @@ public class AfterAbilityDto extends PageDto {
     @Size(max = 5,message = "岗位名称长度不可以超过5")
     private String abilityName;
 
+    private Integer afterAbilityId;
+
     public static void getAfterAbilityDto(AfterAbilityDto afterAbilityDto){
         if(StringUtils.isBlank(afterAbilityDto.getAbilityName())){
             afterAbilityDto.setAbilityName(null);

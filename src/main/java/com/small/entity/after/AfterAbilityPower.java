@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Table(name="after_ability_power")
 public class AfterAbilityPower  implements Serializable {
     /***/
-    private Integer after_ability_id;
-    private Integer after_power_id;
+    private Integer afterAbilityId;
+    private Integer afterPowerId;
 }

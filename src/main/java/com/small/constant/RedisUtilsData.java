@@ -72,12 +72,12 @@ public class RedisUtilsData {
     public static String getProductParameterName(Long productParameterId){
         if(productParameterId != null) {
             String productParameterString = String.valueOf(productParameterId);
-            if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5ProductParameterNameMap", productParameterString)) {
-                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get("h5ProductParameterNameMap", productParameterString));
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5ProductParameterNameMap, productParameterString)) {
+                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5ProductParameterNameMap, productParameterString));
             } else {
                 BpProductParameter bpProductParameter = redisUtilsData.bpProductParameterMapper.selectByPrimaryKey(productParameterId);
                 if(bpProductParameter!=null) {
-                    redisUtilsData.redisTemplate.opsForHash().put("h5ProductParameterNameMap", productParameterString, bpProductParameter.getProductname());
+                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5ProductParameterNameMap, productParameterString, bpProductParameter.getProductname());
                     return bpProductParameter.getProductname();
                 }else{
                     return null;
@@ -96,12 +96,12 @@ public class RedisUtilsData {
     public static String getDictionaryItemValue(Long dicId){
         if(dicId != null) {
             String dicIdString = String.valueOf(dicId);
-            if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5DictionaryItemValueMap", dicIdString)) {
-                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get("h5DictionaryItemValueMap", dicIdString));
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5DictionaryItemValueMap, dicIdString)) {
+                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5DictionaryItemValueMap, dicIdString));
             } else {
                 Dictionary dictionary = redisUtilsData.dictionaryMapper.selectByPrimaryKey(dicId);
                 if(dictionary!=null) {
-                    redisUtilsData.redisTemplate.opsForHash().put("h5DictionaryItemValueMap", dicIdString, dictionary.getItemvalue());
+                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5DictionaryItemValueMap, dicIdString, dictionary.getItemvalue());
                     return dictionary.getItemvalue();
                 }else{
                     return null;
@@ -120,15 +120,15 @@ public class RedisUtilsData {
     public static List<Dictionary> getDictionaryItemValueByProTypeId(Long proTypeId){
         if(proTypeId != null) {
             String proTypeIdString = String.valueOf(proTypeId);
-            if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5DictionaryItemValueProTypeIdMap", proTypeIdString)) {
-                return (List<Dictionary>) redisUtilsData.redisTemplate.opsForHash().get("h5DictionaryItemValueProTypeIdMap", proTypeIdString);
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5DictionaryItemValueProTypeIdMap, proTypeIdString)) {
+                return (List<Dictionary>) redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5DictionaryItemValueProTypeIdMap, proTypeIdString);
             } else {
                 Dictionary dictionary = new Dictionary();
                 dictionary.setProtypeid(proTypeId);
                 dictionary.setStatus("0");
                 List<Dictionary> list = redisUtilsData.dictionaryMapper.select(dictionary);
                 if(dictionary!=null) {
-                    redisUtilsData.redisTemplate.opsForHash().put("h5DictionaryItemValueProTypeIdMap", proTypeIdString, list);
+                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5DictionaryItemValueProTypeIdMap, proTypeIdString, list);
                     return list;
                 }else{
                     return null;
@@ -147,11 +147,11 @@ public class RedisUtilsData {
      * @return
      */
     public static Integer getId(String table, String column){
-        if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5SequencesByIdsMap", table)) {
-            Integer id = (Integer) redisUtilsData.redisTemplate.opsForHash().get("h5SequencesByIdsMap", table);
+        if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5SequencesByIdsMap, table)) {
+            Integer id = (Integer) redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5SequencesByIdsMap, table);
             id = id+1;
             if(id%50!=0){
-                redisUtilsData.redisTemplate.opsForHash().put("h5SequencesByIdsMap", table, id);
+                redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5SequencesByIdsMap, table, id);
                 return id;
             }
         }
@@ -168,7 +168,7 @@ public class RedisUtilsData {
             //将50个放入到
             sequencesUpdate.setSequenceNextHiValue(idKye + 1);
             redisUtilsData.sequencesMapper.updateByExampleSelective(sequencesUpdate, example);
-            redisUtilsData.redisTemplate.opsForHash().put("h5SequencesByIdsMap", table, idKye*50);
+            redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5SequencesByIdsMap, table, idKye*50);
             return idKye*50;
         }else{
             throw new NullPointerException("数据表中的对应列不可为空！");
@@ -179,12 +179,12 @@ public class RedisUtilsData {
     public static String getAbilityName(Long abilityId){
         if(abilityId != null) {
             String abilityIdString = String.valueOf(abilityId);
-            if (redisUtilsData.redisTemplate.opsForHash().hasKey("yuAbilityNameMap", abilityIdString)) {
-                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get("yuAbilityNameMap", abilityIdString));
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.yuAbilityNameMap, abilityIdString)) {
+                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.yuAbilityNameMap, abilityIdString));
             } else {
                 AfterAbility afterAbility = redisUtilsData.afterAbilityMapper.selectByPrimaryKey(abilityId);
                 if(afterAbility!=null) {
-                    redisUtilsData.redisTemplate.opsForHash().put("yuAbilityNameMap", abilityIdString, afterAbility.getAbilityName());
+                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.yuAbilityNameMap, abilityIdString, afterAbility.getAbilityName());
                     return afterAbility.getAbilityName();
                 }else{
                     return null;

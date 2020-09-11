@@ -14,4 +14,8 @@ public class SuccessStaticState {
     public final static String H5SESSIONUSERIP = "H5SessionUserIp";
     /**Redis中存放登录用户的key的*/
     public final static String H5SESSIONUSER = "H5SessionUser";
+
+    public final static String EMPTY = "";
+    public final static String SLASH = "/";
+    public final static String ASTERISK = "*";
 }

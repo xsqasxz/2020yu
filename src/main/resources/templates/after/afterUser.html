@@ -59,7 +59,7 @@
         </div>
         <div class="am-g">
             <div class="am-u-sm-12">
-                <table class="am-table am-table-striped am-table-hover table-main">
+                <table class="am-table am-table-striped am-table-hover table-main am-text-nowrap">
                     <thead>
                     <tr>
                         <th class="table-check"><input type="checkbox" /></th>
@@ -80,7 +80,6 @@
                                 <div class="am-btn-group am-btn-group-xs">
                                     <button class="am-btn am-btn-default am-btn-xs am-text-secondary js-update-after-user" th:value="${afterUser.id}"><span class="am-icon-pencil-square-o"></span> 编辑</button>
                                     <button class="am-btn am-btn-default am-btn-xs am-text-warning refresh-button" th:value="${afterUser.id}"><span class="am-icon-refresh"></span> 重置密码</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
                                 </div>
                             </div>
                         </td>
@@ -139,7 +138,7 @@
                     <input type="hidden" th:id="afterUserId">
                     <div class="am-form-group" id="after-ability-ajax" th:fragment="afterUserAbilityAjax">
                         <label class="am-checkbox-inline" th:each ="afterAbility : ${allAfterAbility}" >
-                            <input type="checkbox" th:name="afterAbilityIds" th:value="${afterAbility.id}" data-am-ucheck>[[${afterAbility.abilityName}]]
+                            <input type="checkbox" th:name="afterAbilityIds" th:value="${afterAbility.id}" data-am-ucheck th:checked="${afterAbility.abilityChecked}">[[${afterAbility.abilityName}]]
                         </label>
                     </div>
                     <button class="am-btn am-btn-secondary js-after-ability-ajax-submit" type="button">提交</button>
@@ -158,7 +157,6 @@
         $modal.find('.am-btn').on('click', function(e) {
             const $target = $(e.target);
             if (($target).hasClass('js-modal-close')) {
-                console.log(15236456)
                 //关闭添加窗口
                 $("#userName").val('');
                 $("#userPassword").val('');
@@ -197,6 +195,7 @@
                 },function(data){
                     if(data.success){
                         myAlert(data.ok);
+                        $userAbilityModal.modal('close');
                     }else{
                         myAlert(data.error);
                     }
@@ -208,7 +207,7 @@
             $("#afterUserId").val($(this).val());
             $userAbilityModal.modal();
             //异步请求数据
-            $("#after-ability-ajax").load("/after/allAfterAbility");
+            $("#after-ability-ajax").load("/after/allAfterAbility/"+$(this).val());
         });
 
         /**重置密码*/

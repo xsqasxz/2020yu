@@ -4,7 +4,6 @@ import com.small.dto.PageDto;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 /**
@@ -17,9 +16,12 @@ public class AfterPowerDto extends PageDto {
     /**URL地址*/
     @Size(max = 30,message = "URL地址长度不可以超过30位")
     private String powerUrl;
+    /**名称*/
+    @Size(max = 15,message = "名称长度不可以超过15")
+    private String authority;
     /**别名*/
     @Size(max = 15,message = "别名长度不可以超过15")
-    private String authority;
+    private String powerAlias;
 
     private Integer afterPowerId;
 

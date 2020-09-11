@@ -59,7 +59,7 @@
         </div>
         <div class="am-g">
             <div class="am-u-sm-12">
-                <table class="am-table am-table-striped am-table-hover table-main">
+                <table class="am-table am-table-striped am-table-hover table-main am-text-nowrap">
                     <thead>
                     <tr>
                         <th class="table-check"></th>
@@ -77,7 +77,7 @@
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
                                     <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary js-modal-open" th:value="${afterAbility.id}"><span class="am-icon-pencil-square-o"></span> 编辑</button>
-                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger"><span class="am-icon-group"></span> 权限</button>
+                                    <button class="am-btn am-btn-default am-btn-xs am-text-danger js-update-after-power" th:value="${afterAbility.id}"><span class="am-icon-group"></span> 权限</button>
                                 </div>
                             </div>
                         </td>
@@ -91,15 +91,90 @@
     </div>
     <!-- content end -->
 </div>
+
+<div class="am-popup" id="after-ability-power">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">添加帐号</h4>
+            <span data-am-modal-close class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <form action="" class="am-form">
+                <fieldset>
+                    <input type="hidden" th:id="afterAbilityId">
+                    <div class="am-form-group" id="after-power-ajax" th:fragment="afterPowerAjax">
+                        <label class="am-checkbox" th:each ="afterPower : ${allAfterPower}" >
+                            <input type="checkbox" th:name="afterPowerIds" th:value="${afterPower.id}" data-am-ucheck th:checked="${afterPower.abilityChecked}">[[${afterPower.authority}]]/[[${afterPower.powerAlias}]]
+                        </label>
+                    </div>
+                    <button class="am-btn am-btn-secondary js-after-power-ajax-submit" type="button">提交</button>
+                    <button class="am-btn js-modal-close" type="button">关闭</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
 <script>
     $(function() {
+        const $abilityPowerModal = $('#after-ability-power');
+        $abilityPowerModal.find('.am-btn').on('click', function(e) {
+            const $target = $(e.target);
+            if (($target).hasClass('js-modal-close')) {
+                $abilityPowerModal.modal('close');
+            }else if(($target).hasClass('js-after-power-ajax-submit')){
+                let $afterPowerIds ={};
+                let i = 0;
+                $('input[name="afterPowerIds"]:checked').each(function(){
+                    $afterPowerIds[i]= $(this).val();
+                    i++;
+                });
+                $.post("/after/updateAfterAbilityPower",{
+                    afterAbilityId:$("#afterAbilityId").val(),
+                    afterPowerIds:$afterPowerIds
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                        $abilityPowerModal.modal('close');
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            }
+        });
+        /**修改岗位权限*/
+        $(".js-update-after-power").click(function(){
+            $("#afterAbilityId").val($(this).val());
+            $abilityPowerModal.modal();
+            //异步请求数据
+            $("#after-power-ajax").load("/after/allAfterPower/"+$(this).val());
+        });
+
+        /**修改岗位名称*/
+        $(".js-modal-open").click(function(){
+            const $afterAbilityId = $(this).val();
+            myPrompt("修改岗位名称",function($abilityName){
+                $.post("/after/updateAfterAbilityNameById",{
+                    afterAbilityId:$afterAbilityId,
+                    abilityName:$abilityName
+                },function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                        location.reload();
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            })
+        });
+
         /**添加岗位*/
         $(".js-add-after-ability").click(function(){
-            myPrompt("请输入新的岗位名称",function(abilityName){
+            myPrompt("请输入新的岗位名称",function($abilityName){
                 $.post("/after/addAfterAbility",{
-                    abilityName:abilityName
+                    abilityName:$abilityName
                 },function(data){
                     if(data.success){
                         myAlert(data.ok);

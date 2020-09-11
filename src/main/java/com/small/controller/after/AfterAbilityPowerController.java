@@ -21,10 +21,16 @@ public class AfterAbilityPowerController {
     private final static Logger logger=LoggerFactory.getLogger(Class.class);
     @Autowired
     private AfterAbilityPowerService afterAbilityPowerService;
+
+    /**
+     * 帐号权限变更
+     * @param afterAbilityPowerDto
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/updateAfterAbilityPower")
     public JsonResponse updateAfterAbilityPower(@Valid AfterAbilityPowerDto afterAbilityPowerDto){
-        logger.debug("岗位变更：{}", afterAbilityPowerDto);
+        logger.debug("帐号权限变更：{}", afterAbilityPowerDto);
         return afterAbilityPowerService.updateAfterAbilityPower(afterAbilityPowerDto);
     }
 }

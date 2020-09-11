@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.small.dto.after.AfterPowerDto;
 import com.small.entity.JsonResponse;
 import com.small.entity.after.AfterPower;
+import com.small.vo.after.AfterPowerVo;
+
+import java.util.List;
 
 /**
  * @author xueshiqi
@@ -19,4 +22,12 @@ public interface AfterPowerService {
      * @return
      */
     JsonResponse updateAfterPower(AfterPowerDto afterPowerDto);
+
+    /**
+     * 得到全部岗位，并将传入id的岗位设为选中
+     * @param afterAbilityId
+     * @return
+     */
+    List<AfterPowerVo> allAfterPower(Integer afterAbilityId);
 }
+

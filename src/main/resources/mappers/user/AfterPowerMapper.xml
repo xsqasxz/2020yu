@@ -5,6 +5,7 @@
         select
           p.id,
           p.power_name as authority,
+          p.power_alias as powerAlias,
           p.power_level as powerLevel,
           p.power_url as powerUrl
         from after_power p inner join after_ability_power ap on p.id = ap.after_power_id
@@ -15,6 +16,7 @@
         select
           p.id,
           p.power_name as authority,
+          p.power_alias as powerAlias,
           p.power_level as powerLevel,
           p.power_url as powerUrl
         from after_power p

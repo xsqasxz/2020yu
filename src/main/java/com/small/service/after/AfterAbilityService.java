@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.small.dto.after.AfterAbilityDto;
 import com.small.entity.JsonResponse;
 import com.small.entity.after.AfterAbility;
+import com.small.vo.after.AfterAbilityVo;
 
 import java.util.List;
 
@@ -26,5 +27,12 @@ public interface AfterAbilityService {
      * 查询全部的岗位
      * @return
      */
-    List<AfterAbility> allAfterAbility();
+    List<AfterAbilityVo> allAfterAbility(Integer afterUserId);
+
+    /**
+     * 修改岗位名称
+     * @param afterAbilityDto
+     * @return
+     */
+    JsonResponse updateAfterAbilityNameById(AfterAbilityDto afterAbilityDto);
 }

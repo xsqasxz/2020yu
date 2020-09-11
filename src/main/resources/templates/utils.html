@@ -28,7 +28,11 @@
                         <span class="am-icon-users"></span>切换帐号<span class="am-icon-caret-down"></span>
                     </a>
                     <ul class="am-dropdown-content">
-                        <li th:each="newPosition : ${#authentication.principal.afterAbilitieList}"><a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.username}')|"><span class="am-icon-user"></span><span th:text="${newPosition.name}">岗位名称</span></a></li>
+                        <li th:each="newPosition : ${#authentication.principal.afterAbilitieList}">
+                            <a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.id}')|">
+                                <span class="am-icon-user"></span><span th:text="${newPosition.abilityName}">岗位名称</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

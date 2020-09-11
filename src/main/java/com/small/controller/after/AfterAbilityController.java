@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,6 +28,14 @@ public class AfterAbilityController {
     private final static Logger logger=LoggerFactory.getLogger(Class.class);
     @Autowired
     private AfterAbilityService afterAbilityService;
+
+    /**
+     * 岗位分页数据
+     * @param afterAbilityDto
+     * @param result
+     * @param model
+     * @return
+     */
     @RequestMapping("/afterAbility")
     public String afterAbility(@Valid AfterAbilityDto afterAbilityDto, BindingResult result, Model model) {
         //根据客户姓名和所属分行查询对应的数据
@@ -43,6 +52,17 @@ public class AfterAbilityController {
     }
 
     /**
+     * 修改岗位名称
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateAfterAbilityNameById")
+    public JsonResponse updateAfterAbilityNameById(@Valid AfterAbilityDto afterAbilityDto){
+        logger.debug("修改岗位名称传入参数：{}", afterAbilityDto);
+        return afterAbilityService.updateAfterAbilityNameById(afterAbilityDto);
+    }
+
+    /**
      * 添加岗位
      * @return
      */
@@ -54,13 +74,15 @@ public class AfterAbilityController {
     }
 
     /**
+     * 得到全部岗位
      * 返回异步刷新页面请求
      * @param model
      * @return
      */
-    @RequestMapping("/allAfterAbility")
-    public String allAfterAbility(Model model){
-        model.addAttribute("allAfterAbility",afterAbilityService.allAfterAbility());
+    @RequestMapping("/allAfterAbility/{afterUserId}")
+    public String allAfterAbility(@PathVariable Integer afterUserId, Model model){
+        //得到全部的岗位
+        model.addAttribute("allAfterAbility",afterAbilityService.allAfterAbility(afterUserId));
         //这里直接从缓存中取得就好了
         return "after/afterUser::afterUserAbilityAjax";
     }

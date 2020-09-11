@@ -18,6 +18,12 @@ public class AfterUserAbilityController {
     private final static Logger logger=LoggerFactory.getLogger(Class.class);
     @Autowired
     private AfterUserAbilityService afterUserAbilityService;
+
+    /**
+     * 岗位变更
+     * @param afterUserAbilityPowerDto
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/updateAfterUserAbilityPower")
     public JsonResponse updateAfterUserAbilityPower(@Valid AfterUserAbilityPowerDto afterUserAbilityPowerDto){

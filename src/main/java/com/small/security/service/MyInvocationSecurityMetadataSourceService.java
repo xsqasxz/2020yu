@@ -47,8 +47,24 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         logger.debug("根据url判断是否有权限进行访问");
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
         logger.debug("访问的url：{}",requestUrl);
-        String authority = getUrlMap(requestUrl.split("\\?")[0]);
+        String key = requestUrl.split("\\?")[0];
+        String authority = getUrlMap(key);
         if(StringUtils.isEmpty(authority)){
+            if(authority == null) {
+                AfterPower afterPower = new AfterPower();
+                afterPower.setPowerUrl(key);
+                AfterPower afterPower1 = afterPowerMapper.selectOne(afterPower);
+                if (afterPower1 == null) {
+                    afterPower.setAuthority(SuccessStaticState.EMPTY);
+                    afterPower.setPowerAlias(SuccessStaticState.EMPTY);
+                    afterPower.setPowerLevel(0);
+                    afterPowerMapper.insert(afterPower);
+                    urlMap.put(key, SuccessStaticState.EMPTY);
+                } else if (!StringUtils.isEmpty(afterPower1.getAuthority())) {
+                    urlMap.put(key, afterPower1.getAuthority());
+                }
+                authority = SuccessStaticState.EMPTY;
+            }
             logger.warn("当前访问的url：{} 未配置权限，请尽快配置",requestUrl);
             if(toConfigure.getAuthorityVerification().equals("false")) {
                 authority = SuccessStaticState.AUTHORITY;
@@ -89,23 +105,43 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
                 urlMap = new HashMap<>();
             }
         }
+        //这里配置统配*号匹配
         String alias = urlMap.get(key);
-        if(StringUtils.isEmpty(alias)){
-            AfterPower afterPower = new AfterPower();
-            afterPower.setPowerUrl(key);
-            AfterPower afterPower1 = afterPowerMapper.selectOne(afterPower);
-            if(afterPower1 == null) {
-                afterPower.setAuthority("");
-                afterPower.setPowerAlias("");
-                afterPower.setPowerLevel(0);
-                afterPowerMapper.insert(afterPower);
-                urlMap.put(key,"");
-            }else if(!StringUtils.isEmpty(afterPower1.getAuthority())){
-                urlMap.put(key,afterPower1.getAuthority());
+        if(alias == null) {
+            //如果没找到，就把最后一位替换为*，然后递归进行查找直到全部换为*为止
+            String keys = replaceBehind(key);
+            if (keys != null) {
+                getUrlMap(replaceBehind(key));
             }
-            return "";
+            return null;
         }else{
             return alias;
+        }
+    }
+
+    /**
+     * 将最后一个/后面的替换为*
+     * @param key
+     * @return
+     */
+    private String replaceBehind(String key){
+        String[] aggregate = key.split(SuccessStaticState.SLASH);
+        StringBuffer stringBuffer = new StringBuffer();
+        boolean whetherReplace=true;
+        for(int i =aggregate.length-1;i>0;i--){
+            String s = aggregate[i];
+            if(whetherReplace && !SuccessStaticState.ASTERISK.equals(s)) {
+                stringBuffer.insert(0, SuccessStaticState.ASTERISK);
+                whetherReplace = false;
+            }else{
+                stringBuffer.insert(0, s);
+            }
+            stringBuffer.insert(0,SuccessStaticState.SLASH) ;
+        }
+        if(whetherReplace){
+            return null;
+        }else {
+            return stringBuffer.toString();
         }
     }
 }

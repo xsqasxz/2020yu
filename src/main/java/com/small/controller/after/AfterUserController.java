@@ -27,6 +27,14 @@ public class AfterUserController {
     private final static Logger logger=LoggerFactory.getLogger(Class.class);
     @Autowired
     private AfterUserService afterUserService;
+
+    /**
+     * 帐号管理界面
+     * @param afterUserDto
+     * @param result
+     * @param model
+     * @return
+     */
     @RequestMapping("/afterUser")
     public String afterUser(@Valid AfterUserDto afterUserDto, BindingResult result, Model model) {
         //根据客户姓名和所属分行查询对应的数据

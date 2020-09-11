@@ -8,6 +8,8 @@ import com.small.service.after.AfterUserAbilityService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AfterUserAbilityServiceImpl implements AfterUserAbilityService {
@@ -25,5 +27,13 @@ public class AfterUserAbilityServiceImpl implements AfterUserAbilityService {
             }
         );
         return JsonResponse.ok("岗位更新成功");
+    }
+
+    @Override
+    public List<Integer> getAfterAbilityIdsByUserId(Integer afterUserId) {
+        AfterUserAbility afterUserAbility = new AfterUserAbility();
+        afterUserAbility.setAfterUserId(afterUserId);
+        List<AfterUserAbility> list= afterUserAbilityMapper.select(afterUserAbility);
+        return list.stream().map(AfterUserAbility ::getAfterAbilityId).collect(Collectors.toList());
     }
 }
