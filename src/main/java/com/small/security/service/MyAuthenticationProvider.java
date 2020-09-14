@@ -73,8 +73,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             }
             throw new BadCredentialsException("登录名或密码错误");
         } else {
-            //得到用户的权限 (这里使用岗位id)
-            List<AfterPower> authorityList = sysRoleDao.findById(afterUser.getAbilityId());
             //密码校验
             if (!switchAccount(afterUser,presentedPassword)) {
                 if(getRedisLoginIntercept(SuccessStaticState.H5SESSIONUSER + details.getRemoteAddress(),1,10,TimeUnit.HOURS)){
@@ -86,6 +84,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
                 //这里做次数拦截  密码输入错误3次后 5分钟后才可以继续尝试
                 throw new BadCredentialsException("登录名或密码错误");
             } else {
+                //得到用户的权限 (这里使用岗位id)
+                List<AfterPower> authorityList = sysRoleDao.findById(afterUser.getAbilityId());
                 List<AfterAbility> afterAbilitieList = sysRoleDao.findAfterAbilityByUserId(afterUser.getId());
                 afterAbilitieList.removeIf(n -> afterUser.getAbilityId().equals(n.getId()));
                 UserDetails userDeatils = new SysUser(username, afterUser.getUserPassword(), authorityList, afterUser.getId(),sysRoleDao.getAbilityNameById(afterUser.getAbilityId()),afterAbilitieList);

@@ -15,6 +15,8 @@ public class SuccessStaticState {
     /**Redis中存放登录用户的key的*/
     public final static String H5SESSIONUSER = "H5SessionUser";
 
+    public final static String INSUFFICIENT_AUTHORITY = "权限不足，请联系管理员！";
+
     public final static String EMPTY = "";
     public final static String SLASH = "/";
     public final static String ASTERISK = "*";

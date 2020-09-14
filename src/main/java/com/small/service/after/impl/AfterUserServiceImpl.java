@@ -7,8 +7,11 @@ import com.small.dto.after.AfterUserDto;
 import com.small.entity.JsonResponse;
 import com.small.entity.after.AfterUser;
 import com.small.mapper.after.AfterUserMapper;
+import com.small.security.entity.SysUser;
 import com.small.service.after.AfterUserService;
 import com.small.utils.StringUtil;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -53,5 +56,16 @@ public class AfterUserServiceImpl implements AfterUserService {
         }else{
             return JsonResponse.error("帐号已存在！");
         }
+    }
+
+    @Override
+    public JsonResponse updateAfterUserAbilityId(AfterUserDto afterUserDto) {
+        AfterUser afterUser = new AfterUser();
+        afterUser.setAbilityId(afterUserDto.getAfterAbilitieId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SysUser user = (SysUser)authentication.getPrincipal();
+        afterUser.setId(user.getUserId());
+        afterUserMapper.updateByPrimaryKeySelective(afterUser);
+        return JsonResponse.ok("修改成功！");
     }
 }

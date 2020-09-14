@@ -26,4 +26,11 @@ public interface AfterUserService {
      * @return
      */
     JsonResponse addAfterUser(AfterUserDto afterUserDto);
+
+    /**
+     * 修改用户默认岗位
+     * @param afterUserDto
+     * @return
+     */
+    JsonResponse updateAfterUserAbilityId(AfterUserDto afterUserDto);
 }

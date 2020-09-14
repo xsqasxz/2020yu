@@ -2,8 +2,10 @@ package com.small.service.after.impl;
 
 import com.small.dto.after.AfterUserAbilityPowerDto;
 import com.small.entity.JsonResponse;
+import com.small.entity.after.AfterUser;
 import com.small.entity.after.AfterUserAbility;
 import com.small.mapper.after.AfterUserAbilityMapper;
+import com.small.mapper.after.AfterUserMapper;
 import com.small.service.after.AfterUserAbilityService;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class AfterUserAbilityServiceImpl implements AfterUserAbilityService {
 
     @Resource
     private AfterUserAbilityMapper afterUserAbilityMapper;
+    @Resource
+    private AfterUserMapper afterUserMapper;
     @Override
     public JsonResponse updateAfterUserAbilityPower(AfterUserAbilityPowerDto afterUserAbilityPowerDto) {
         AfterUserAbility afterUserAbility = new AfterUserAbility();
@@ -26,6 +30,12 @@ public class AfterUserAbilityServiceImpl implements AfterUserAbilityService {
                 afterUserAbilityMapper.insert(afterUserAbility);
             }
         );
+        //修改默认岗位
+        AfterUser afterUser = afterUserMapper.selectByPrimaryKey(afterUserAbilityPowerDto.getAfterUserId());
+        if(!afterUserAbilityPowerDto.getAfterAbilityIds().contains(afterUser.getAbilityId())){
+            afterUser.setAbilityId(afterUserAbilityPowerDto.getAfterAbilityIds().get(0));
+            afterUserMapper.updateByPrimaryKeySelective(afterUser);
+        }
         return JsonResponse.ok("岗位更新成功");
     }
 

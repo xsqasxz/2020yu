@@ -24,6 +24,8 @@ public class AfterUserDto extends PageDto {
     private String userPassword;
     /**用户id*/
     private Integer afterUserId;
+    /**用户默认岗位*/
+    private Integer afterAbilitieId;
 
     public static void getAfterUserDto(AfterUserDto afterAbilityDto){
         if(StringUtils.isBlank(afterAbilityDto.getUserName())){

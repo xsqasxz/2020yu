@@ -4,16 +4,17 @@ import com.small.constant.SuccessStaticState;
 import com.small.constant.ToConfigure;
 import com.small.entity.after.AfterPower;
 import com.small.mapper.after.AfterPowerMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -69,6 +70,9 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
             if(toConfigure.getAuthorityVerification().equals("false")) {
                 authority = SuccessStaticState.AUTHORITY;
             }
+        }
+        if(StringUtils.isEmpty(authority)){
+            throw new BadCredentialsException(SuccessStaticState.INSUFFICIENT_AUTHORITY);
         }
         return SecurityConfig.createList(authority);
     }

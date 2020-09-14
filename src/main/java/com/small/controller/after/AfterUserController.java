@@ -73,4 +73,17 @@ public class AfterUserController {
         logger.debug("添加用户传入参数：{}", afterUserDto);
         return afterUserService.addAfterUser(afterUserDto);
     }
+
+    /**
+     * 修改用户默认岗位
+     * @param afterUserDto
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateAfterUserAbilityId")
+    public JsonResponse updateAfterUserAbilityId(@Valid AfterUserDto afterUserDto){
+        logger.debug("修改用户默认岗位传入参数：{}", afterUserDto);
+        return afterUserService.updateAfterUserAbilityId(afterUserDto);
+    }
+
 }

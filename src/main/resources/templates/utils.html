@@ -28,9 +28,9 @@
                         <span class="am-icon-users"></span>切换帐号<span class="am-icon-caret-down"></span>
                     </a>
                     <ul class="am-dropdown-content">
-                        <li th:each="newPosition : ${#authentication.principal.afterAbilitieList}">
-                            <a href="javascript:;" th:href="|javascript:switch_account_post('${newPosition.id}')|">
-                                <span class="am-icon-user"></span><span th:text="${newPosition.abilityName}">岗位名称</span>
+                        <li th:each="afterAbilitie : ${#authentication.principal.afterAbilitieList}">
+                            <a href="javascript:;" th:href="|javascript:switch_account_post('${afterAbilitie.id}','${#authentication.name}')|">
+                                <span class="am-icon-user"></span><span th:text="${afterAbilitie.abilityName}">岗位名称</span>
                             </a>
                         </li>
                     </ul>
@@ -73,29 +73,14 @@
                     </ul>
                 </li>
 
-                <li class="am-panel" sec:authorize="hasAuthority('SlSmallLoanProjectQuery')">
-                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#role-nav'}">
-                        <i class="am-icon-list-ul am-margin-left-sm"></i> 贷款业务查询 <i class="am-icon-angle-right am-fr am-margin-right"></i>
-                    </a>
-                    <ul class="am-list am-collapse admin-sidebar-sub" id="role-nav">
-                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=7')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 全部贷款业务 </a></li>
-                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=0')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 办理中贷款 </a></li>
-                        <li sec:authorize="hasAuthority('SmallLoanProjectManager?projectStatus=1')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 放款后贷款 </a></li>
-                        <li sec:authorize="hasAuthority('InRepositoryByHeadView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 总部在库查询 </a></li>
-                        <li sec:authorize="hasAuthority('InRepositoryByBranchView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 分行在库查询 </a></li>
-                        <li sec:authorize="hasAuthority('OutboundCustomerListView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 已出库客户清单 </a></li>
-                        <li sec:authorize="hasAuthority('CreditWorkthinessView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> sh资信 </a></li>
-                    </ul>
-                </li>
-
                 <li class="am-panel">
                     <a data-am-collapse="{parent: '#collapase-nav-1', target: '#authority-nav'}">
                         <i class="am-margin-left-sm"></i><img th:src="@{../image/icon/quanxianguanli.png}"> 权限设置 <i class="am-icon-angle-right am-fr am-margin-right"></i>
                     </a>
                     <ul class="am-list am-collapse admin-sidebar-sub" id="authority-nav" th:class="${parentNode eq 'after'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" >
-                        <li><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{../image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
-                        <li><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{../image/icon/gangweiguanli.png}">岗位管理 </a></li>
-                        <li><a href="#" th:href="@{/after/afterPower}"><img th:src="@{../image/icon/urldizguanli.png}"> 功能管理 </a></li>
+                        <li sec:authorize="hasAuthority('帐号管理')"><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{../image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
+                        <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{../image/icon/gangweiguanli.png}">岗位管理 </a></li>
+                        <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{../image/icon/urldizguanli.png}"> 功能管理 </a></li>
                     </ul>
                 </li>
             </ul>

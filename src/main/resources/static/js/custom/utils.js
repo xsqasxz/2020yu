@@ -58,10 +58,19 @@ function postSubmit(url,parameter){
 }
 
 /**切换账号*/
-function switch_account_post(username) {
-    var switch_account_form_id=document.getElementById("switch_account_form_id");
-    $("#username").val(username);
-    switch_account_form_id.submit();
+function switch_account_post($afterAbilitieId,$userName) {
+    //修改默认帐号，然后进行登录
+    $.post("/after/updateAfterUserAbilityId",{
+        afterAbilitieId:$afterAbilitieId
+    },function(data){
+        if(data.success){
+            const switch_account_form_id=document.getElementById("switch_account_form_id");
+            $("#username").val($userName);
+            switch_account_form_id.submit();
+        }else{
+            myAlert(data.error);
+        }
+    });
 }
 
 /**分页*/

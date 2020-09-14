@@ -3,11 +3,9 @@ package com.small.constant;
 import com.small.entity.Dictionary;
 import com.small.entity.Sequences;
 import com.small.entity.after.AfterAbility;
-import com.small.entity.project.BpProductParameter;
 import com.small.mapper.DictionaryMapper;
 import com.small.mapper.SequencesMapper;
 import com.small.mapper.after.AfterAbilityMapper;
-import com.small.mapper.project.BpProductParameterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -28,8 +26,6 @@ public class RedisUtilsData {
     private RedisTemplate redisTemplate;
     @Resource
     private AfterAbilityMapper afterAbilityMapper;
-    @Resource
-    private BpProductParameterMapper bpProductParameterMapper;
     @Resource
     private DictionaryMapper dictionaryMapper;
     @Resource
@@ -64,29 +60,29 @@ public class RedisUtilsData {
 //        }
 //    }
 
-    /**
-     * 查询产品名称
-     * @param productParameterId
-     * @return
-     */
-    public static String getProductParameterName(Long productParameterId){
-        if(productParameterId != null) {
-            String productParameterString = String.valueOf(productParameterId);
-            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5ProductParameterNameMap, productParameterString)) {
-                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5ProductParameterNameMap, productParameterString));
-            } else {
-                BpProductParameter bpProductParameter = redisUtilsData.bpProductParameterMapper.selectByPrimaryKey(productParameterId);
-                if(bpProductParameter!=null) {
-                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5ProductParameterNameMap, productParameterString, bpProductParameter.getProductname());
-                    return bpProductParameter.getProductname();
-                }else{
-                    return null;
-                }
-            }
-        }else{
-            return null;
-        }
-    }
+//    /**
+//     * 查询产品名称
+//     * @param productParameterId
+//     * @return
+//     */
+//    public static String getProductParameterName(Long productParameterId){
+//        if(productParameterId != null) {
+//            String productParameterString = String.valueOf(productParameterId);
+//            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5ProductParameterNameMap, productParameterString)) {
+//                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5ProductParameterNameMap, productParameterString));
+//            } else {
+//                BpProductParameter bpProductParameter = redisUtilsData.bpProductParameterMapper.selectByPrimaryKey(productParameterId);
+//                if(bpProductParameter!=null) {
+//                    redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5ProductParameterNameMap, productParameterString, bpProductParameter.getProductname());
+//                    return bpProductParameter.getProductname();
+//                }else{
+//                    return null;
+//                }
+//            }
+//        }else{
+//            return null;
+//        }
+//    }
 
     /**
      * 查询数据字典
@@ -175,7 +171,6 @@ public class RedisUtilsData {
         }
     }
 
-
     public static String getAbilityName(Long abilityId){
         if(abilityId != null) {
             String abilityIdString = String.valueOf(abilityId);
@@ -194,6 +189,5 @@ public class RedisUtilsData {
             return null;
         }
     }
-
 
 }
