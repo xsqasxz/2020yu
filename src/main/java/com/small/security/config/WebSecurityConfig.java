@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web){
         // 给 swagger 放行；不需要权限能访问的资源
-        web.ignoring().antMatchers("/css/**", "/fonts/**","/i/**","/image/**","/js/**","/toLogin");
+        web.ignoring().antMatchers("/static/**","/css/**", "/fonts/**","/i/**","/image/**","/js/**","/toLogin","/blog/**");
     }
 
     /**
@@ -71,7 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .and()
-                .formLogin().loginPage("/toLogin").loginProcessingUrl("/login")
+                /*.formLogin().loginPage("/toLogin").loginProcessingUrl("/login")*/
+                .formLogin().loginPage("/blog").loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new MyAuthenticationFailureHandler())
                 .successHandler(new MyAuthenticationSuccessHandler())

@@ -23,6 +23,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         logger.debug("登录成功");
-        httpServletResponse.sendRedirect("/index");
+        httpServletResponse.sendRedirect("/admin-index");
     }
 }
