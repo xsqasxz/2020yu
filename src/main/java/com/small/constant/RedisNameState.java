@@ -9,6 +9,8 @@ public class RedisNameState {
     public static String afterPowerList = "AfterPower:List";
     /**放入全部的岗位信息*/
     public static String afteraBilityList = "AfterAbility:List";
+    /**放入首页导航数据*/
+    public static String blogNavigationDtoList = "BlogNavigationDto:List";
 
     public static String h5ProductParameterNameMap = "h5ProductParameterNameMap";
     public static String h5DictionaryItemValueProTypeIdMap = "h5DictionaryItemValueProTypeIdMap";

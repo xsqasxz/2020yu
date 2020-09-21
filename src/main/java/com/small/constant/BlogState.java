@@ -7,5 +7,5 @@ package com.small.constant;
  */
 public class BlogState {
     /**首页导航类型*/
-    public final static Integer INDEXNAVIGATION =0;
+    public final static short INDEXNAVIGATION =0;
 }
