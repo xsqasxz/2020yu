@@ -1,0 +1,102 @@
+<!doctype html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="~{utils::admin_head}">
+</head>
+<body>
+<!-- 头部功能部分 start-->
+<header th:insert="~{utils::admin_header}" >
+</header>
+<!-- 头部功能部分 end-->
+
+<div class="am-cf admin-main">
+    <!-- 导航栏公共部分 start -->
+    <div th:insert="~{utils::navigation_bar}"></div>
+    <!-- 导航栏公共部分 end -->
+    <!-- 内容部分 -->
+    <div class="admin-content">
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">前端管理</strong> / <small>文章发布</small></div>
+        </div>
+
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
+                <div class="am-btn-group am-btn-group-xs">
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
+                </div>
+            </div>
+            <form th:action="@{/front/frontPage}" th:method="post">
+                <input th:name="pageNum" th:id="pageNum" th:value="${pageContent.pageNum}" type="hidden" >
+                <input th:name="pageSize" th:id="pageSize" th:value="${pageContent.pageSize}" type="hidden" >
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        客户姓名
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" th:name="authority" class="am-form-field">
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                    <div class="am-u-sm-4 am-u-md-3">
+                        URL地址
+                    </div>
+                    <div class="am-input-group am-input-group-sm">
+                        <input type="text" th:name="powerUrl" class="am-form-field">
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-input-group am-input-group-sm">
+                        <button class="am-btn am-btn-default" type="submit">搜索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <table class="am-table am-table-striped am-table-hover table-main">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>大类</th>
+                        <th class="am-hide-sm-only">创建人</th>
+                        <th>是否生效</th>
+                        <th class="am-hide-sm-only">url地址</th>
+                        <th class="am-hide-sm-only">修改时间</th>
+                        <th class="am-hide-sm-only">创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each ="afterPower : ${pageContent.list}" class="table-click">
+                        <td>名称</td>
+                        <td>类型</td>
+                        <td>大类</td>
+                        <td class="am-hide-sm-only">创建人</td>
+                        <td>是否生效</td>
+                        <td class="am-hide-sm-only">url地址</td>
+                        <td class="am-hide-sm-only">修改时间</td>
+                        <td class="am-hide-sm-only">创建时间</td>
+                        <td>
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary js-modal-open"><span class="am-icon-pencil-square-o"></span> 预览</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <footer th:insert="~{utils::page_html}"></footer>
+                <hr/>
+            </div>
+        </div>
+    </div>
+    <!-- 内容部分 end -->
+</div>
+<!--底部js引入-->
+<footer th:insert="~{utils::bottom_js}"></footer>
+</body>
+</html>

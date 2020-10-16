@@ -19,10 +19,17 @@
         <div class="am-cf am-padding">
             <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">首页</strong> / <small>一些常用模块</small></div>
         </div>
-        <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-            <li sec:authorize="hasAuthority('帐号管理')"><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{../image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
-            <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{../image/icon/gangweiguanli.png}">岗位管理 </a></li>
-            <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{../image/icon/urldizguanli.png}"> 功能管理 </a></li>
+        <ul sec:authorize="hasAuthority('帐号管理') || hasAuthority('岗位管理') || hasAuthority('功能管理')"
+            class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
+            <li sec:authorize="hasAuthority('帐号管理')"><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{/image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
+            <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{/image/icon/gangweiguanli.png}">岗位管理 </a></li>
+            <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{/image/icon/urldizguanli.png}"> 功能管理 </a></li>
+        </ul>
+        <ul sec:authorize="hasAuthority('静态页面管理') || hasAuthority('访问管理') || hasAuthority('文章发布')"
+            class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
+            <li sec:authorize="hasAuthority('静态页面管理')"><a href="#"  th:href="@{/front/frontPage}"><img th:src="@{/image/icon/page-management.png}"> 静态页面管理 </a></li>
+            <li sec:authorize="hasAuthority('访问管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{/image/icon/fangwenguanli.png}">访问管理访问管理 </a></li>
+            <li sec:authorize="hasAuthority('文章发布')"><a href="#" th:href="@{/front/frontRelease}"><img th:src="@{/image/icon/wenzhangguanli.png}"> 文章发布 </a></li>
         </ul>
     </div>
     <!-- content end -->

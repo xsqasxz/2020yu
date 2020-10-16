@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.small.mapper.front.FrontHtmlMapper" >
+       <select id="getFrontHtml" resultType="com.small.entity.front.FrontHtml" parameterType="com.small.dto.front.FrontPageDto">
+        select
+           fh.id,
+           fh.html_name as htmlName,
+           fh.html_type as htmlType,
+           fh.html_keyword as htmlKeyword,
+           fh.user_id as userId,
+           fh.take_effect as takeEffect,
+           fh.html_url as htmlUrl,
+           fh.create_date as createDate,
+           fh.update_date as updateDate
+        from front_html fh
+        <where>
+            <if test="htmlName !=null">
+                and fh.html_name like '%${htmlName}%'
+            </if>
+            <if test="htmlType !=null">
+                and fh.html_type = #{htmlType}
+            </if>
+            <if test="htmlKeyword !=null">
+                and fh.html_keyword like '%${htmlKeyword}%'
+            </if>
+            <if test="takeEffect !=null">
+                and fh.take_effect = #{takeEffect}
+            </if>
+        </where>
+        order by fh.id desc
+    </select>
+</mapper>

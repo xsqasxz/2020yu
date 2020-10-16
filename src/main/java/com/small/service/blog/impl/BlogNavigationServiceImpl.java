@@ -2,7 +2,6 @@ package com.small.service.blog.impl;
 
 import com.small.constant.RedisNameState;
 import com.small.dto.blog.BlogNavigationDto;
-import com.small.entity.after.AfterAbility;
 import com.small.entity.blog.BlogNavigation;
 import com.small.mapper.blog.BlogNavigationMapper;
 import com.small.service.blog.BlogNavigationService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;

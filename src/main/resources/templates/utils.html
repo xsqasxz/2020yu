@@ -4,10 +4,10 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:fragment="admin_head">
     <meta charset="utf-8">
-    <title>长信数科小额贷款管理系统</title>
+    <title>奇妙茶馆</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" type="image/png" href="../static/i/favicon.ico" th:href="@{/i/favicon.ico}">
-    <link rel="apple-touch-icon-precomposed" href="../static/i/app-icon72x72@2x.png" th:href="@{/i/favicon.ico}">
+    <link rel="icon" type="image/png" th:href="@{/i/favicon.ico}">
+    <link rel="apple-touch-icon-precomposed" th:href="@{/i/favicon.ico}">
     <link rel="stylesheet" href="../static/css/amazeui.min.css" th:href="@{/css/amazeui.min.css}"/>
     <link rel="stylesheet" href="../static/css/admin.css" th:href="@{/css/admin.css}">
 </head>
@@ -52,35 +52,27 @@
                 <li  class="am-panel">
                     <a href="#" th:href="@{/admin-index}"><i class="am-icon-home am-margin-left-sm"></i> 首页</a>
                 </li>
-                <!--<li  class="am-panel">-->
-                    <!--<a href="#" th:href="@{/demo}"><i class="am-icon-home am-margin-left-sm"></i> 任务处理</a>-->
-                <!--</li>-->
-                <li class="am-panel" sec:authorize="hasAuthority('SlSmallLoanProjectAfter')">
-                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#company-nav'}">
-                        <i class="am-icon-list-ul am-margin-left-sm"></i> 贷后管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+
+                <li class="am-panel">
+                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#authority-nav'}">
+                        <i class="am-margin-left-sm"></i><img th:src="@{/image/icon/quanxianguanli.png}"> 权限设置 <i class="am-icon-angle-right am-fr am-margin-right"></i>
                     </a>
-                    <ul class="am-list am-collapse admin-sidebar-sub" th:class="${parentNode eq 'loan'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" id="company-nav">
-                        <li sec:authorize="hasAuthority('HeadLoanManageDetailView')"><a href="#"  th:href="@{/loan/headLoanManage}"><span class="am-icon-briefcase am-margin-left-sm"></span> 总部贷后管理 </a></li>
-                        <li sec:authorize="hasAuthority('BranchLoanManageDetailView')"><a href="#" th:href="@{/loan/branchLoanManage}"><span class="am-icon-file-text am-margin-left-sm"></span> 分行贷后管理 </a></li>
-                        <li sec:authorize="hasAuthority('OutsourcingLoanManageDetailView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 委外贷后管理 </a></li>
-                        <li sec:authorize="hasAuthority('RestLoanManageView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 其他贷后管理 </a></li>
-                        <li sec:authorize="hasAuthority('RecycleLoanManage')"><a href="#" th:href="@{/loan/recycleLoanManage}"><span class="am-icon-recycle am-margin-left-sm"></span> 回收贷后管理 </a></li>
-                        <li sec:authorize="hasAuthority('RepaymentRemindView')"><a href="#" th:href="@{/ri/remind}"><span class="am-icon-suitcase am-margin-left-sm"></span> 还款提醒 </a></li>
-                        <li sec:authorize="hasAuthority('LawSuitView')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 诉讼列表 </a></li>
-                        <li sec:authorize="hasAuthority('PostLoanMonitoringManagement')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 贷后监控管理 </a></li>
-                        <li sec:authorize="hasAuthority('RecoveryOfOverdueAmount')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 逾期金额回收报表 </a></li>
-                        <li sec:authorize="hasAuthority('CommunicationAfterloan')"><a href="#" th:onclick="myAlert('功能完善中。。。。。')"><span class="am-icon-table am-margin-left-sm"></span> 贷后短信管理 </a></li>
+                    <ul class="am-list am-collapse admin-sidebar-sub" id="authority-nav" th:class="${parentNode eq 'after'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" >
+                        <li sec:authorize="hasAuthority('帐号管理')"><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{/image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
+                        <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{/image/icon/gangweiguanli.png}">岗位管理 </a></li>
+                        <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{/image/icon/urldizguanli.png}"> 功能管理 </a></li>
+                        <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{/image/icon/urldizguanli.png}"> 缓存管理 </a></li>
                     </ul>
                 </li>
 
                 <li class="am-panel">
-                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#authority-nav'}">
-                        <i class="am-margin-left-sm"></i><img th:src="@{../image/icon/quanxianguanli.png}"> 权限设置 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                    <a data-am-collapse="{parent: '#collapase-nav-1', target: '#front-end-nav'}">
+                        <i class="am-margin-left-sm"></i><img th:src="@{/image/icon/qianduankaifa.png}"> 前端管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
                     </a>
-                    <ul class="am-list am-collapse admin-sidebar-sub" id="authority-nav" th:class="${parentNode eq 'after'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" >
-                        <li sec:authorize="hasAuthority('帐号管理')"><a href="#"  th:href="@{/after/afterUser}"><img th:src="@{../image/icon/zhanghaoguanli.png}"> 帐号管理 </a></li>
-                        <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{../image/icon/gangweiguanli.png}">岗位管理 </a></li>
-                        <li sec:authorize="hasAuthority('功能管理')"><a href="#" th:href="@{/after/afterPower}"><img th:src="@{../image/icon/urldizguanli.png}"> 功能管理 </a></li>
+                    <ul class="am-list am-collapse admin-sidebar-sub" id="front-end-nav" th:class="${parentNode eq 'front'}? 'am-list am-collapse admin-sidebar-sub am-in' :'am-list am-collapse admin-sidebar-sub'" >
+                        <li sec:authorize="hasAuthority('静态页面管理')"><a href="#"  th:href="@{/front/frontPage}"><img th:src="@{/image/icon/page-management.png}"> 静态页面管理 </a></li>
+                        <li sec:authorize="hasAuthority('岗位管理')"><a href="#" th:href="@{/after/afterAbility}"><img th:src="@{/image/icon/fangwenkongzhiguanbi.png}">访问管理 </a></li>
+                        <li sec:authorize="hasAuthority('文章发布')"><a href="#" th:href="@{/front/frontRelease}"><img th:src="@{/image/icon/wenzhangguanli.png}"> 文章发布 </a></li>
                     </ul>
                 </li>
             </ul>
@@ -88,19 +80,7 @@
     </div>
     <!-- 导航栏公共部分 end -->
 </div>
-<!--所属分行下拉-->
-<div class="am-u-sm-12 am-u-md-3 am-form-group" th:fragment="organizing_html">
-    <div class="am-u-sm-4 am-u-md-3">
-        所属分行
-    </div>
-    <div class="am-input-group am-input-group-sm">
-        <select th:name="orgIds" multiple data-am-selected="{btnSize: 'sm',maxHeight: 250}">
-            <option th:each="organizing : ${#authentication.principal.organizingList}"
-                    th:value="${organizing.id}"
-                    th:text="${organizing.name}" th:selected="${orgIds!=null && orgIds.contains(organizing.id)}">分行名称</option>
-        </select>
-    </div>
-</div>
+
 
 <div class="am-cf" th:fragment="page_html">
     共 <span th:text="${pageContent.total}">15</span> 条记录
