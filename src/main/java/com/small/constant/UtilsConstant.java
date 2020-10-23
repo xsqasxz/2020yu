@@ -7,7 +7,6 @@ package com.small.constant;
 public class UtilsConstant {
 
     public static String LOAN = "loan";
-
     public static String AFTER = "after";
     public static String FRONT = "front";
 }

@@ -17,16 +17,10 @@
     <!-- 内容部分 -->
     <div class="admin-content">
         <div class="am-cf am-padding">
-            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">前端管理</strong> / <small>文章发布</small></div>
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">前端管理</strong> / <small>静态页面管理</small></div>
         </div>
 
         <div class="am-g">
-            <div class="am-u-sm-12 am-u-md-3 am-form-group am-btn-toolbar">
-                <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
-                    <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
-                </div>
-            </div>
             <form th:action="@{/front/frontPage}" th:method="post">
                 <input th:name="pageNum" th:id="pageNum" th:value="${pageContent.pageNum}" type="hidden" >
                 <input th:name="pageSize" th:id="pageSize" th:value="${pageContent.pageSize}" type="hidden" >
@@ -70,19 +64,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each ="afterPower : ${pageContent.list}" class="table-click">
-                        <td>名称</td>
-                        <td>类型</td>
-                        <td>大类</td>
-                        <td class="am-hide-sm-only">创建人</td>
-                        <td>是否生效</td>
-                        <td class="am-hide-sm-only">url地址</td>
-                        <td class="am-hide-sm-only">修改时间</td>
-                        <td class="am-hide-sm-only">创建时间</td>
+                    <tr th:each ="frontHtml : ${pageContent.list}" class="table-click">
+                        <td th:text="${frontHtml.htmlName}" class="table-html-name">名称</td>
+                        <td th:text="${frontHtml.htmlType}" class="table-html-type">类型</td>
+                        <td th:text="${frontHtml.htmlKeyword}" class="table-html-keyword">大类</td>
+                        <td th:text="${frontHtml.userId}" class="am-hide-sm-only">创建人</td>
+                        <td th:text="${frontHtml.takeEffect}">是否生效</td>
+                        <td th:text="${frontHtml.htmlUrl}" class="table-html-url am-hide-sm-only">url地址</td>
+                        <td th:text="${#dates.format(frontHtml.updateDate, 'yyyy-MM-dd HH:mm:ss')}" class="am-hide-sm-only">修改时间</td>
+                        <td th:text="${#dates.format(frontHtml.createDate, 'yyyy-MM-dd HH:mm:ss')}" class="am-hide-sm-only">创建时间</td>
                         <td>
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
-                                    <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary js-modal-open"><span class="am-icon-pencil-square-o"></span> 预览</button>
+                                    <button type="button" class="am-btn am-btn-default am-text-secondary js-front-page-update" th:value="${frontHtml.id}"><span class="am-icon-pencil-square-o"></span> 修改</button>
+                                    <button type="button" class="am-btn am-btn-default am-text-success js-front-page-preview" th:value="${frontHtml.id}"><span class="am-icon-eye"></span> 预览</button>
+                                    <button type="button" class="am-btn am-btn-default am-text-warning js-front-page-take-effect" th:value="${frontHtml.id}"><span class="am-icon-trash-o"></span> 禁用</button>
                                 </div>
                             </div>
                         </td>
@@ -96,7 +92,43 @@
     </div>
     <!-- 内容部分 end -->
 </div>
+<div class="am-popup" id="my-update-front-page">
+    <div class="am-popup-inner">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">静态页面修改</h4>
+            <span data-am-modal-close class="am-close">&times;</span>
+        </div>
+        <div class="am-popup-bd">
+            <form action="" class="am-form" id="doc-vld-msg" data-am-validator>
+                <input type="hidden" id="frontHtmlId"/>
+                <fieldset>
+                    <div class="am-form-group">
+                        <label for="htmlName">名称：</label>
+                        <input type="text" id="htmlName" minlength="3"
+                               placeholder="名称（至少 3 个字符）" required/>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="htmlType">类型：</label>
+                        <input type="text" id="htmlType" minlength="3"
+                               placeholder="别名（至少 3 个字符）" required/>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="htmlKeyword">大类：</label>
+                        <input type="text" id="htmlKeyword" required/>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="htmlUrl">url地址：</label>
+                        <input type="text" id="htmlUrl" required/>
+                    </div>
+                    <button class="am-btn am-btn-secondary js-after-power-submit" type="button">提交</button>
+                    <button class="am-btn js-modal-close" type="button">关闭</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
+<script th:inline="javascript" th:src="@{/js/front/frontPage.js}"></script>
 </body>
 </html>
