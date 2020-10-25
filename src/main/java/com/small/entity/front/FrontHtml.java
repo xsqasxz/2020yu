@@ -1,5 +1,6 @@
 package com.small.entity.front;
 
+import com.small.dto.front.FrontPageDto;
 import com.small.dto.front.FrontReleaseDto;
 import com.small.security.entity.SysUser;
 import lombok.Data;
@@ -57,6 +58,21 @@ public class FrontHtml implements Serializable {
         this.takeEffect = frontReleaseDto.getTakeEffect()==null?false:frontReleaseDto.getTakeEffect();
         this.htmlUrl = frontReleaseDto.getHtmlUrl();
         this.createDate = new Date();
+        if(this.id!=null) {
+            this.updateDate = new Date();
+        }
+    }
+
+    public FrontHtml(FrontPageDto frontPageDto) {
+        this.id = frontPageDto.getFrontHtmlId();
+        this.htmlName = frontPageDto.getHtmlName();
+        this.htmlType = frontPageDto.getHtmlType();
+        this.htmlKeyword = frontPageDto.getHtmlKeyword();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SysUser user = (SysUser)authentication.getPrincipal();
+        this.userId = user.getUserId();
+        this.takeEffect = frontPageDto.getTakeEffect()==null?false:frontPageDto.getTakeEffect();
+        this.htmlUrl = frontPageDto.getHtmlUrl();
         if(this.id!=null) {
             this.updateDate = new Date();
         }

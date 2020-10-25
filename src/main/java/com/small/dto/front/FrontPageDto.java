@@ -14,4 +14,6 @@ public class FrontPageDto extends PageDto {
     private Integer htmlType;
     private String htmlKeyword;
     private Boolean takeEffect;
+    private Integer frontHtmlId;
+    private String htmlUrl;
 }

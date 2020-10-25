@@ -2,6 +2,7 @@ package com.small.controller.front;
 
 import com.small.constant.UtilsConstant;
 import com.small.dto.front.FrontPageDto;
+import com.small.entity.JsonResponse;
 import com.small.service.front.FrontPageService;
 import com.small.utils.OrgUtil;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -40,6 +42,13 @@ public class FrontPageController {
         }
         OrgUtil.getModel(model,UtilsConstant.FRONT);
         return "front/frontPage";
+    }
+
+    @ResponseBody
+    @RequestMapping("/updateFrontHtml")
+    public JsonResponse updateFrontHtml(@Valid FrontPageDto frontPageDto){
+        logger.debug("添加用户传入参数：{}", frontPageDto);
+        return frontPageService.updateFrontHtml(frontPageDto);
     }
 
 }

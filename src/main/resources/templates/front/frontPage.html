@@ -107,10 +107,14 @@
                         <input type="text" id="htmlName" minlength="3"
                                placeholder="名称（至少 3 个字符）" required/>
                     </div>
-                    <div class="am-form-group">
-                        <label for="htmlType">类型：</label>
-                        <input type="text" id="htmlType" minlength="3"
-                               placeholder="别名（至少 3 个字符）" required/>
+                    <div>
+                        <label>类型：</label>
+                        <label class="am-radio-inline">
+                            <input type="radio" name="htmlType" value="true" data-am-ucheck>有效
+                        </label>
+                        <label class="am-radio-inline">
+                            <input type="radio" name="htmlType" value="false" data-am-ucheck>无效
+                        </label>
                     </div>
                     <div class="am-form-group">
                         <label for="htmlKeyword">大类：</label>

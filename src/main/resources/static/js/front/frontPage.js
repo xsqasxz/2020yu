@@ -5,12 +5,11 @@ $(function() {
         clickTr = this;
         const frontHtmlId = $(this).val();
         const htmlName = $(this).parents("tr").children("td.table-html-name").html();
-        const htmlType = $(this).parents("tr").children("td.table-html-type").html();
+        // const htmlType = $(this).parents("tr").children("td.table-html-type").html();
         const htmlKeyword = $(this).parents("tr").children("td.table-html-keyword").html();
         const htmlUrl = $(this).parents("tr").children("td.table-html-url").html();
         $("#frontHtmlId").val(frontHtmlId);
         $("#htmlName").val(htmlName);
-        $("#htmlType").val(htmlType);
         $("#htmlKeyword").val(htmlKeyword);
         $("#htmlUrl").val(htmlUrl);
         $modal.modal();
@@ -20,36 +19,41 @@ $(function() {
         const $target = $(e.target);
         if (($target).hasClass('js-modal-close')) {
             //关闭添加窗口
-            $("#afterPowerId").val('');
-            $("#powerUrl").val('');
-            $("#authority").val('');
-            $("#powerAlias").val('');
-            $modal.modal('close');
+            modalClose();
         }else if(($target).hasClass('js-after-power-submit')){
-            const afterPowerId = $("#afterPowerId").val();
-            const authority = $("#authority").val();
-            const powerUrl = $("#powerUrl").val();
-            const powerAlias = $("#powerAlias").val();
-            $.post("/after/updateAfterPower",{
-                afterPowerId:afterPowerId,
-                authority:authority,
-                powerAlias:powerAlias,
-                powerUrl:powerUrl
+            //提交按钮
+            const frontHtmlId = $("#frontHtmlId").val();
+            const htmlName = $("#htmlName").val();
+            const htmlType = $("#htmlType").val();
+            const htmlKeyword = $("#htmlKeyword").val();
+            const htmlUrl = $("#htmlUrl").val();
+            $.post("/front/updateFrontHtml",{
+                frontHtmlId:frontHtmlId,
+                htmlName:htmlName,
+                htmlType:htmlType,
+                htmlKeyword:htmlKeyword,
+                htmlUrl:htmlUrl
             },function(data){
                 if(data.success){
-                    $(clickTr).parents("tr").children("td.table-authority").html(authority);
-                    $(clickTr).parents("tr").children("td.table-powerAlias").html(powerAlias);
-                    $(clickTr).parents("tr").children("td.table-powerUrl").html(powerUrl);
-                    $("#afterPowerId").val('');
-                    $("#powerUrl").val('');
-                    $("#authority").val('');
-                    $("#powerAlias").val('');
-                    $modal.modal('close');
+                    $(clickTr).parents("tr").children("td.table-html-name").html(htmlName);
+                    $(clickTr).parents("tr").children("td.table-html-type").html(htmlType);
+                    $(clickTr).parents("tr").children("td.table-html-keyword").html(htmlKeyword);
+                    $(clickTr).parents("tr").children("td.table-html-url").html(htmlUrl);
+                    modalClose();
                 }else{
                     myAlert(data.error);
                 }
             });
         }
     });
+
+    /**关闭*/
+    function modalClose(){
+        $("#frontHtmlId").val('');
+        $("#htmlName").val('');
+        $("#htmlKeyword").val('');
+        $("#htmlUrl").val('');
+        $modal.modal('close');
+    }
 
 });
