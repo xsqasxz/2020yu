@@ -60,4 +60,13 @@ public class DemoController {
         return "index";
     }
 
+    public static void main(String [] s){
+        Object o = new Object();
+        o="654981";
+        //1450575459
+        //1596526467
+        //1596526461
+        System.out.println(o.hashCode());
+    }
+
 }

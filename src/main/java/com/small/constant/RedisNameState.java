@@ -17,4 +17,5 @@ public class RedisNameState {
     public static String yuAbilityNameMap = "yuAbilityNameMap";
     public static String h5SequencesByIdsMap = "h5SequencesByIdsMap";
     public static String h5DictionaryItemValueMap = "h5DictionaryItemValueMap";
+    public static String h5UserNameMap = "h5UserNameMap";
 }

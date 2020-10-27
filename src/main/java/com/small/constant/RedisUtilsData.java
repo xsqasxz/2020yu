@@ -6,6 +6,7 @@ import com.small.entity.after.AfterAbility;
 import com.small.mapper.DictionaryMapper;
 import com.small.mapper.SequencesMapper;
 import com.small.mapper.after.AfterAbilityMapper;
+import com.small.mapper.after.AfterUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class RedisUtilsData {
     @Resource
     private AfterAbilityMapper afterAbilityMapper;
     @Resource
+    private AfterUserMapper afterUserMapper;
+    @Resource
     private DictionaryMapper dictionaryMapper;
     @Resource
     private SequencesMapper sequencesMapper;
@@ -45,20 +48,20 @@ public class RedisUtilsData {
      * @param accountId 用户岗位id
      * @return 返回用户名称
      */
-//    public static String getUserName(Long accountId){
-//        if(accountId != null) {
-//            String accountIdString = String.valueOf(accountId);
-//            if (redisUtilsData.redisTemplate.opsForHash().hasKey("h5UserNameMap", accountIdString)) {
-//                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get("h5UserNameMap", accountIdString));
-//            } else {
-//                String userName = redisUtilsData.afterUserMapper.getUserName(accountId);
-//                redisUtilsData.redisTemplate.opsForHash().put("h5UserNameMap", accountIdString, userName);
-//                return userName;
-//            }
-//        }else{
-//            return null;
-//        }
-//    }
+    public static String getUserName(Long accountId){
+        if(accountId != null) {
+            String accountIdString = String.valueOf(accountId);
+            if (redisUtilsData.redisTemplate.opsForHash().hasKey(RedisNameState.h5UserNameMap, accountIdString)) {
+                return String.valueOf(redisUtilsData.redisTemplate.opsForHash().get(RedisNameState.h5UserNameMap, accountIdString));
+            } else {
+                String userName = redisUtilsData.afterUserMapper.getUserName(accountId);
+                redisUtilsData.redisTemplate.opsForHash().put(RedisNameState.h5UserNameMap, accountIdString, userName);
+                return userName;
+            }
+        }else{
+            return null;
+        }
+    }
 
 //    /**
 //     * 查询产品名称

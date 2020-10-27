@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>奇妙茶馆</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="alternate icon" type="image/png" th:href="@{/i/favicon.ico}">
+  <link rel="stylesheet" th:href="@{/css/amazeui.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+</head>
+<body>
+<div class="am-g am-g-fixed blog-g-fixed">
+  <div class="am-u-md-12">
+    <article class="blog-main">
+      <h3 class="am-article-title blog-title">
+        <a th:href="@{/blog/detailed}">Spring Boot项目篇</a>
+      </h3>
+
+      <h4 class="am-article-meta blog-meta">最新修改时间：2014/06/17</h4>
+
+      <div class="am-g blog-content">
+        <div class="am-u-lg-7">
+          <p>对于Spring Boot学习记录篇，按照下面教程可以实现0基础学习。</p>
+          <p>Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。
+            该框架使用了特定的方式来进行配置，从而使开发人员不再需要定义样板化的配置。
+            通过这种方式，Spring Boot致力于在蓬勃发展的快速应用开发领域(rapid application development)成为领导者。</p>
+        </div>
+        <div class="am-u-lg-5">
+          <p><img th:src="@{/image/blog/spring-logo.gif}"></p>
+        </div>
+      </div>
+
+      <div class="am-g">
+        <div class="am-u-sm-12">
+          <p>SpringBoot是由Pivotal团队在2013年开始研发、2014年4月发布第一个版本的全新开源的轻量级框架。
+            它基于Spring4.0设计，不仅继承了Spring框架原有的优秀特性，而且还通过简化配置来进一步简化了Spring应用的整个搭建和开发过程。
+            另外SpringBoot通过集成大量的框架使得依赖包的版本冲突，以及引用的不稳定性等问题得到了很好的解决。</p>
+        </div>
+      </div>
+    </article>
+
+    <hr class="am-article-divider blog-hr">
+  </div>
+</div>
+<footer class="blog-footer">
+  <p>奇妙茶馆<br/>
+    <small>©奇妙茶馆</small>
+    <small>©奇妙茶馆</small>
+  </p>
+</footer>
+<script th:src="@{/js/amazeui.ie8polyfill.min.js}"></script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/amazeui.min.js}"></script>
+</body>
+</html>

@@ -46,4 +46,12 @@ public class FrontReleaseController {
         logger.debug("保存模版");
         return frontReleaseService.saveFrontRelease(frontReleaseDto);
     }
+
+    /**模版预览*/
+    @RequestMapping("/preview")
+    public String preview(Model model) {
+        logger.debug("模版预览");
+        OrgUtil.getModel(model,UtilsConstant.FRONT);
+        return "front/indexTemplate";
+    }
 }
