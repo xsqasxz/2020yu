@@ -89,11 +89,7 @@ $(function() {
         if (htmlType === '<span>模版</span>'){
           myAlert("只有首页模版和详情模版可以预览！");
         }else{
-            // window.open("http://192.168.1.110:8081/front/preview", "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
-
-            const url = "http://192.168.1.110:8081/front/preview";
-            var windowName="win"+(new Date()).getTime();
-            window.open(url,windowName,"dialogWidth=700,dialogHeight=1300,top=0, left=0, toolbar=no, menubar=no,resizable=no,location=no");
+            window.open("http://localhost:8081/front/preview", "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
         }
     })
     /**关闭*/
