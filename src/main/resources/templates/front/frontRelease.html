@@ -32,7 +32,8 @@
 
         <div class="am-g" style="height: 700px;">
             <div class="am-u-sm-12" >
-                <textarea style="height: 600px;" title="富文本插件">
+                <input th:id="frontReleaseId" type="hidden" th:if="${frontHtml!=null}" th:value="${frontHtml.id}">
+                <textarea style="height: 600px;" title="富文本插件" th:utext="${frontHtml!=null?frontHtml.htmlText:''}">
                  </textarea>
             </div>
         </div>

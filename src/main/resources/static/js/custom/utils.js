@@ -25,7 +25,7 @@ function myConfirm(textVal,determine,cancel){
     });
 }
 
-/**公用的警告框*/
+/**输入框*/
 function myPrompt(textVal,determine,cancel){
     $('#warnPrompt').empty();
     $('.am-modal-prompt-input').val('');

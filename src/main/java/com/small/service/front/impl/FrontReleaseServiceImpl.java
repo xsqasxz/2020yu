@@ -22,7 +22,23 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
 
     @Override
     public JsonResponse saveFrontRelease(FrontReleaseDto frontReleaseDto) {
-        frontHtmlMapper.insert(new FrontHtml(frontReleaseDto));
+        FrontHtml frontHtml = new FrontHtml(frontReleaseDto);
+        if(frontHtml!=null && frontHtml.getId()!=null){
+            frontHtmlMapper.updateByPrimaryKeySelective(frontHtml);
+        }else {
+            frontHtmlMapper.insert(frontHtml);
+        }
         return JsonResponse.ok("模版保存成功！");
+    }
+
+    @Override
+    public FrontHtml selectByPrimaryKey(FrontReleaseDto frontReleaseDto) {
+        return frontHtmlMapper.selectByPrimaryKey(new FrontHtml(frontReleaseDto));
+    }
+
+    @Override
+    public JsonResponse deleteFrontHtml(FrontReleaseDto frontReleaseDto) {
+        frontHtmlMapper.deleteByPrimaryKey(frontReleaseDto.getFrontReleaseId());
+        return JsonResponse.ok("模版删除成功！");
     }
 }

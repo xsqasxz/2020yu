@@ -84,14 +84,33 @@ $(function() {
     });
 
     $('.js-front-page-preview').click(function(){
+        const frontHtmlId = $(this).val();
         let htmlType = $(this).parents("tr").children("td.table-html-type").html();
         htmlType = htmlType.trim();
         if (htmlType === '<span>模版</span>'){
           myAlert("只有首页模版和详情模版可以预览！");
         }else{
-            window.open("http://localhost:8081/front/preview", "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
+            window.open("http://localhost:8081/front/preview?frontReleaseId="+frontHtmlId, "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
         }
+    });
+
+    /**
+     * 删除模版
+     */
+    $('.js-front-page-delete').click(function(){
+        const frontHtmlId = $(this).val();
+        myConfirm("确认是否删除",$.post("/front/deleteFrontHtml",{
+            frontHtmlId:frontHtmlId
+        },function(data){
+            if(data.success){
+                myAlert(data.ok);
+                $(clickTr).parents("tr").remove();
+            }else{
+                myAlert(data.error);
+            }
+        }));
     })
+
     /**关闭*/
     function modalClose(){
         $("#frontHtmlId").val('');

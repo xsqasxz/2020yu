@@ -29,8 +29,9 @@ public class FrontReleaseController {
     public FrontReleaseService frontReleaseService;
 
     @RequestMapping("/frontRelease")
-    public String frontRelease(Model model) {
+    public String frontRelease(@Valid FrontReleaseDto frontReleaseDto,Model model) {
         logger.debug("发布文章");
+        model.addAttribute("frontHtml",frontReleaseService.selectByPrimaryKey(frontReleaseDto));
         OrgUtil.getModel(model,UtilsConstant.FRONT);
         return "front/frontRelease";
     }
@@ -47,10 +48,23 @@ public class FrontReleaseController {
         return frontReleaseService.saveFrontRelease(frontReleaseDto);
     }
 
+    /**
+     * 删除模版
+     * @param frontReleaseDto
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deleteFrontHtml")
+    public JsonResponse deleteFrontHtml(@Valid FrontReleaseDto frontReleaseDto){
+        logger.debug("删除模版");
+        return frontReleaseService.deleteFrontHtml(frontReleaseDto);
+    }
+
     /**模版预览*/
     @RequestMapping("/preview")
-    public String preview(Model model) {
-        logger.debug("模版预览");
+    public String preview(@Valid FrontReleaseDto frontReleaseDto,Model model) {
+        logger.debug("模版预览:{}"+frontReleaseDto);
+        model.addAttribute("frontHtml",frontReleaseService.selectByPrimaryKey(frontReleaseDto));
         OrgUtil.getModel(model,UtilsConstant.FRONT);
         return "front/indexTemplate";
     }
