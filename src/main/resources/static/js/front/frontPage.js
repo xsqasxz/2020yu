@@ -3,12 +3,12 @@ $(function() {
     let clickTr;
     $(".js-front-page-update").click(function(){
         clickTr = this;
-        const frontHtmlId = $(this).val();
-        const htmlName = $(this).parents("tr").children("td.table-html-name").html();
-        const htmlType = $(this).parents("tr").children("td.table-html-type").html();
-        const htmlKeyword = $(this).parents("tr").children("td.table-html-keyword").html();
-        const htmlUrl = $(this).parents("tr").children("td.table-html-url").html();
-        const takeEffect = $(this).parents("tr").children("td.table-html-take-effect").html();
+        let frontHtmlId = $(this).val();
+        let htmlName = $(this).parents("tr").children("td.table-html-name").html();
+        let htmlType = $(this).parents("tr").children("td.table-html-type").html();
+        let htmlKeyword = $(this).parents("tr").children("td.table-html-keyword").html();
+        let htmlUrl = $(this).parents("tr").children("td.table-html-url").html();
+        let takeEffect = $(this).parents("tr").children("td.table-html-take-effect").html();
         $("#frontHtmlId").val(frontHtmlId);
         $("#htmlName").val(htmlName);
         $("#htmlKeyword").val(htmlKeyword);
@@ -36,19 +36,20 @@ $(function() {
 
     /**点击修改后的弹出框*/
     $modal.find('.am-btn').on('click', function(e) {
-        const $target = $(e.target);
+        clickTr = this;
+        let $target = $(e.target);
         if (($target).hasClass('js-modal-close')) {
             //关闭添加窗口
             modalClose();
         }
         else if(($target).hasClass('js-after-power-submit')){
             //提交按钮
-            const frontHtmlId = $("#frontHtmlId").val();
-            const htmlName = $("#htmlName").val();
-            const htmlType = $("#htmlType").val();
-            const htmlKeyword = $("#htmlKeyword").val();
-            const htmlUrl = $("#htmlUrl").val();
-            const takeEffect = $("input[type=radio][name=takeEffect]:checked").val();
+            let frontHtmlId = $("#frontHtmlId").val();
+            let htmlName = $("#htmlName").val();
+            let htmlType = $("#htmlType").val();
+            let htmlKeyword = $("#htmlKeyword").val();
+            let htmlUrl = $("#htmlUrl").val();
+            let takeEffect = $("input[type=radio][name=takeEffect]:checked").val();
             $.post("/front/updateFrontHtml",{
                 frontHtmlId:frontHtmlId,
                 htmlName:htmlName,
@@ -59,7 +60,6 @@ $(function() {
             },function(data){
                 if(data.success){
                     $(clickTr).parents("tr").children("td.table-html-name").html(htmlName);
-
                     switch (htmlType){
                         case '0':
                             $(clickTr).parents("tr").children("td.table-html-type").html('<span>模版</span>');
@@ -71,7 +71,6 @@ $(function() {
                             $(clickTr).parents("tr").children("td.table-html-type").html('<span>详情模版</span>');
                             break;
                     }
-
                     $(clickTr).parents("tr").children("td.table-html-keyword").html(htmlKeyword);
                     $(clickTr).parents("tr").children("td.table-html-url").html(htmlUrl);
                     $(clickTr).parents("tr").children("td.table-html-take-effect").html(takeEffect===true||takeEffect==='true'?'是':'否');
@@ -84,7 +83,7 @@ $(function() {
     });
 
     $('.js-front-page-preview').click(function(){
-        const frontHtmlId = $(this).val();
+        let frontHtmlId = $(this).val();
         let htmlType = $(this).parents("tr").children("td.table-html-type").html();
         htmlType = htmlType.trim();
         if (htmlType === '<span>模版</span>'){
@@ -98,18 +97,20 @@ $(function() {
      * 删除模版
      */
     $('.js-front-page-delete').click(function(){
-        const frontHtmlId = $(this).val();
-        myConfirm("确认是否删除",$.post("/front/deleteFrontHtml",{
-            frontHtmlId:frontHtmlId
-        },function(data){
-            if(data.success){
-                myAlert(data.ok);
-                $(clickTr).parents("tr").remove();
-            }else{
-                myAlert(data.error);
-            }
-        }));
-    })
+        let frontHtmlId = $(this).val();
+        clickTr = this;
+        myConfirm("确认是否删除",function(){
+            $.post("/front/deleteFrontHtml",{
+                frontReleaseId:frontHtmlId
+            },function(data){
+                if(data.success){
+                    $(clickTr).parents("tr").remove();
+                }else{
+                    myAlert(data.error);
+                }
+            });
+        });
+    });
 
     /**关闭*/
     function modalClose(){

@@ -8,8 +8,8 @@ function myAlert(textVal){
 
 /**公用的警告框*/
 function myConfirm(textVal,determine,cancel){
-    $('#warnPrompt').empty();
-    $('#warnPrompt').append(textVal);
+    $('#warnConfirm').empty();
+    $('#warnConfirm').append(textVal);
     $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function() {
