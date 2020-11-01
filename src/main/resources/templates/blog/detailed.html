@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
   <meta charset="UTF-8">
   <title>奇妙茶馆</title>
@@ -12,6 +11,7 @@
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="alternate icon" type="image/png" th:href="@{/i/favicon.ico}">
   <link rel="stylesheet" th:href="@{/css/amazeui.css}"/>
+  <link rel="stylesheet" th:href="@{/css/detailed.css}"/>
   <style>
     @media only screen and (min-width: 1200px) {
       .blog-g-fixed {
@@ -56,6 +56,8 @@
 </head>
 <body>
 <header class="am-topbar">
+  <input th:name="pageNum" th:id="pageNum" th:value="${pageContent.pageNum}" type="hidden" >
+  <input th:name="pageSize" th:id="pageSize" th:value="${pageContent.pageSize}" type="hidden" >
   <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
           data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
           class="am-icon-bars"></span></button>
@@ -64,17 +66,6 @@
     <ul class="am-nav am-nav-pills am-topbar-nav">
       <li><a th:href="@{/blog}">店面</a></li>
       <li class="am-active"><a href="#">茶桌</a></li>
-      <li class="am-dropdown" data-am-dropdown>
-        <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-          菜单 <span class="am-icon-caret-down"></span>
-        </a>
-        <ul class="am-dropdown-content">
-          <li class="am-dropdown-header">标题</li>
-          <li><a href="#">关于我们</a></li>
-          <li><a href="#">关于字体</a></li>
-          <li><a href="#">TIPS</a></li>
-        </ul>
-      </li>
     </ul>
 
     <form class="am-topbar-form am-topbar-left am-form-inline am-topbar-right" role="search">
@@ -90,13 +81,8 @@
 <div class="am-g am-g-fixed blog-g-fixed">
   <div class="am-u-md-12">
     <article class="blog-main">
-      <ul class="am-list">
-        <li><a th:href="@{/blog/details/c}" th:target="details">Google fonts 的字體（sans-serif 篇）<span class="am-badge am-badge-warning">2014/06/17</span></a></li>
-        <li><a th:href="@{/blog/details/c}" th:target="details">[but]服貿最前線？－再訪桃園機場<span class="am-badge am-badge-danger">2014/06/17</span></a></li>
-        <li><a th:href="@{/blog/details/c}" th:target="details">到日星鑄字行學字型<span class="am-badge am-badge-success">2014/06/17</span></a></li>
-        <li><a th:href="@{/blog/details/c}" th:target="details">glyph font vs. 漢字（上）<span class="am-badge am-badge-secondary">2014/06/17</span></a></li>
-        <li><a th:href="@{/blog/details/c}" th:target="details">浙江民間書刻體上線<span class="am-badge am-badge-primary">2014/06/17</span></a></li>
-        <li><a th:href="@{/blog/details/c}" th:target="details">[極短篇] Android v.s iOS，誰的字體好讀？<span class="am-badge">2014/06/17</span></a></li>
+      <ul class="am-list" th:each ="detailedVo : ${pageContent.list}" >
+        <li><a th:href="@{/blog/details(frontHtmlId=${detailedVo.frontHtmlId})}" th:target="${detailedVo.htmlName}"><span th:text="${detailedVo.htmlName}"></span><span class="am-badge am-badge-warning" th:text="${#dates.format(detailedVo.detailedDate, 'yyyy-MM-dd')}" >2014/06/17</span></a></li>
       </ul>
     </article>
 

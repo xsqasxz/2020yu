@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
   <meta charset="UTF-8">
   <title>奇妙茶馆</title>
@@ -24,15 +23,6 @@
     <ul class="am-nav am-nav-pills am-topbar-nav">
       <li class="am-active"><a href="#">店面</a></li>
       <li><a th:href="@{/blog/detailed}">茶桌</a></li>
-      <li class="am-dropdown" data-am-dropdown>
-        <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-          菜单 <span class="am-icon-caret-down"></span>
-        </a>
-        <ul class="am-dropdown-content">
-          <li><a href="#">关于我们</a></li>
-          <li><a href="#">关于字体</a></li>
-        </ul>
-      </li>
     </ul>
 
     <form class="am-topbar-form am-topbar-left am-form-inline am-topbar-right" role="search">
@@ -104,7 +94,17 @@
         </div>
       </div>
     </article>
+    <hr class="am-article-divider blog-hr">
 
+    <article class="blog-main">
+      <h3 class="am-article-title"><a href="../blog/detailed" aria-invalid="true">Java面试题</a></h3>
+      <h4 class="am-article-meta blog-meta">最新修改时间：2020/10/31</h4>
+      <div class="am-g blog-content">
+        <div class="am-u-lg-10">
+          <p>个人记录的Java面试题，助力广大Java程序员在面试中过关斩将。</p>
+        </div>
+      </div>
+    </article>
     <hr class="am-article-divider blog-hr">
   </div>
 </div>

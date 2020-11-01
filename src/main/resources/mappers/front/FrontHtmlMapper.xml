@@ -29,4 +29,22 @@
         </where>
         order by fh.id desc
     </select>
+
+    <select id="getDetailed" resultType="com.small.vo.blog.DetailedVo" parameterType="com.small.dto.blog.BlogDto">
+        select
+        fh.id as frontHtmlId,
+        fh.html_name as htmlName,
+        fh.html_keyword as htmlKeyword,
+        ifnull(fh.update_date,fh.create_date) as detailedDate
+        from front_html fh
+        <where>
+            fh.html_type = 2
+            <if test="htmlKeyword !=null">
+                and fh.html_keyword = #{htmlKeyword}
+            </if>
+            <if test="wantUpdate !=null">
+                and fh.want_update = #{wantUpdate}
+            </if>
+        </where>
+    </select>
 </mapper>

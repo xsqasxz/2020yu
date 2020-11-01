@@ -9,8 +9,8 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <link rel="alternate icon" type="image/png" th:href="@{/i/favicon.ico}">
-  <link rel="stylesheet" th:href="@{/css/amazeui.css}"/>
+  <link rel="alternate icon" type="image/png" href="http://localhost:8081/i/favicon.ico">
+  <link rel="stylesheet" href="http://localhost:8081/css/amazeui.css"/>
   <style>
     @media only screen and (min-width: 641px) {
       .am-offcanvas {
@@ -92,15 +92,15 @@
   </style>
 </head>
 <body>
-<div th:utext="${frontHtml.htmlText}"></div>
+<div th:utext="${htmlText}"></div>
 <footer class="my-footer">
   <p>奇妙茶馆<br/>
     <small>©奇妙茶馆</small>
     <small><a style="color:#666" target="beian" href="http://beian.miit.gov.cn">粤ICP备2020098974号</a></small>
   </p>
 </footer>
-<script th:src="@{/js/amazeui.ie8polyfill.min.js}"></script>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script th:src="@{/js/amazeui.min.js}"></script>
+<script src="http://localhost:8081/js/amazeui.ie8polyfill.min.js"></script>
+<script src="http://localhost:8081/js/jquery.min.js"></script>
+<script src="http://localhost:8081/js/amazeui.min.js"></script>
 </body>
 </html>

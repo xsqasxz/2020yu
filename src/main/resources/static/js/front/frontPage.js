@@ -1,5 +1,6 @@
 $(function() {
     const $modal = $('#my-update-front-page');
+    const $modal_top = $('#my-top-fp');
     let clickTr;
     $(".js-front-page-update").click(function(){
         clickTr = this;
@@ -36,7 +37,6 @@ $(function() {
 
     /**点击修改后的弹出框*/
     $modal.find('.am-btn').on('click', function(e) {
-        clickTr = this;
         let $target = $(e.target);
         if (($target).hasClass('js-modal-close')) {
             //关闭添加窗口
@@ -80,7 +80,48 @@ $(function() {
                 }
             });
         }
+        else if(($target).hasClass('js-home-fp')) {
+            console.log(123456)
+        }
     });
+    /**顶部点击*/
+    $modal_top.find('.am-btn').on('click', function(e) {
+        let $target = $(e.target);
+        if(($target).hasClass('js-home-fp')) {
+            myConfirm("确认是否生产页面",function(){
+                $.post("/front/crdateHomeHtml",function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            });
+        }
+        else if(($target).hasClass('js-details-fp')) {
+            myConfirm("确认是否生产页面",function(){
+                $.post("/front/crdateDetailedHtml",function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            });
+        }
+        else if(($target).hasClass('js-teahouse-fp')) {
+            myConfirm("确认是否生产页面",function(){
+                $.post("/front/crdatedetailsHtml",function(data){
+                    if(data.success){
+                        myAlert(data.ok);
+                    }else{
+                        myAlert(data.error);
+                    }
+                });
+            });
+        }
+    });
+
 
     $('.js-front-page-preview').click(function(){
         let frontHtmlId = $(this).val();

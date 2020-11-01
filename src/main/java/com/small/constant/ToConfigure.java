@@ -13,4 +13,8 @@ import org.springframework.stereotype.Component;
 public class ToConfigure {
     @Value("${authority_verification}")
     private String authorityVerification;
+    @Value("${url.path}")
+    private String urlPath;
+    @Value("${nginx.path}")
+    private String nginxPath;
 }

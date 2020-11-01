@@ -1,5 +1,6 @@
 package com.small.entity.front;
 
+import com.small.dto.blog.BlogDto;
 import com.small.dto.front.FrontPageDto;
 import com.small.dto.front.FrontReleaseDto;
 import com.small.security.entity.SysUser;
@@ -36,6 +37,8 @@ public class FrontHtml implements Serializable {
     private Integer userId;
     /**是否生效*/
     private Boolean takeEffect;
+    /**是否更新*/
+    private Boolean wantUpdate;
     /**模版生成的url地址 类型为详情模版时专用*/
     private String htmlUrl;
     /**创建时间*/
@@ -56,6 +59,7 @@ public class FrontHtml implements Serializable {
         SysUser user = (SysUser)authentication.getPrincipal();
         this.userId = user.getUserId();
         this.takeEffect = frontReleaseDto.getTakeEffect()==null?false:frontReleaseDto.getTakeEffect();
+        this.wantUpdate = true;
         this.htmlUrl = frontReleaseDto.getHtmlUrl();
         this.createDate = new Date();
         if(this.id!=null) {
@@ -76,5 +80,15 @@ public class FrontHtml implements Serializable {
         if(this.id!=null) {
             this.updateDate = new Date();
         }
+    }
+
+    public FrontHtml(BlogDto blogDto) {
+        this.id = blogDto.getFrontHtmlId();
+        this.htmlKeyword = blogDto.getHtmlKeyword();
+    }
+
+    public FrontHtml(Integer id, Boolean wantUpdate) {
+        this.id = id;
+        this.wantUpdate = wantUpdate;
     }
 }

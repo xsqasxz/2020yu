@@ -3,6 +3,7 @@ package com.small.controller.after;
 import com.small.constant.UtilsConstant;
 import com.small.dto.after.AfterPowerDto;
 import com.small.entity.JsonResponse;
+import com.small.security.service.MyInvocationSecurityMetadataSourceService;
 import com.small.service.after.AfterPowerService;
 import com.small.utils.OrgUtil;
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ public class AfterPowerController {
     private final static Logger logger=LoggerFactory.getLogger(Class.class);
     @Autowired
     private AfterPowerService afterPowerService;
+    @Autowired
+    private MyInvocationSecurityMetadataSourceService myInvocationSecurityMetadataSourceService;
 
     /**
      * 功能管理
@@ -76,4 +79,16 @@ public class AfterPowerController {
         //这里直接从缓存中取得就好了
         return "after/afterAbility::afterPowerAjax";
     }
+
+    /**
+     * 更新权限
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateUrlMap")
+    public JsonResponse updateUrlMap(){
+        myInvocationSecurityMetadataSourceService.updateUrlMap();
+        return JsonResponse.ok("权限目录更新成功");
+    }
+
 }

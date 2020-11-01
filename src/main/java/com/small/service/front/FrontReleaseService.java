@@ -1,5 +1,6 @@
 package com.small.service.front;
 
+import com.small.dto.blog.BlogDto;
 import com.small.dto.front.FrontReleaseDto;
 import com.small.entity.JsonResponse;
 import com.small.entity.front.FrontHtml;
@@ -14,5 +15,13 @@ public interface FrontReleaseService {
 
     FrontHtml selectByPrimaryKey(FrontReleaseDto frontReleaseDto);
 
+    FrontHtml selectByPrimaryKey(BlogDto blogDto);
+
     JsonResponse deleteFrontHtml(FrontReleaseDto frontReleaseDto);
+
+    JsonResponse crdateHomeHtml();
+
+    JsonResponse crdateDetailedHtml();
+
+    JsonResponse crdatedetailsHtml();
 }

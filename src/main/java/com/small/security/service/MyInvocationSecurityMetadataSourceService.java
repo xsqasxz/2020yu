@@ -124,6 +124,17 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
     }
 
     /**
+     * 更新静态权限
+     */
+    public void updateUrlMap(){
+        List<AfterPower> list = afterPowerMapper.selectAll();
+        if(!CollectionUtils.isEmpty(list)) {
+            urlMap = list.stream().collect(Collectors.toMap(AfterPower::getPowerUrl, AfterPower::getAuthority));
+        }else {
+            urlMap = new HashMap<>();
+        }
+    }
+    /**
      * 将最后一个/后面的替换为*
      * @param key
      * @return

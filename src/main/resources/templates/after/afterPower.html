@@ -25,6 +25,7 @@
                 <div class="am-btn-group am-btn-group-xs">
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
                     <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 禁用</button>
+                    <button type="button" class="am-btn am-btn-default js-update-ap"><span class="am-icon-trash-o"></span> 更新权限</button>
                 </div>
             </div>
             <form th:action="@{/after/afterPower}" th:method="post">
@@ -137,6 +138,19 @@
             $modal.modal();
         });
 
+        /**
+         * 更新权限
+         */
+        $(".js-update-ap").click(function(){
+            $.post("/after/updateUrlMap",function(data){
+                if(data.success){
+                    myAlert(data.ok);
+                }else{
+                    myAlert(data.error);
+                }
+            });
+        });
+
         $modal.find('.am-btn').on('click', function(e) {
             const $target = $(e.target);
             if (($target).hasClass('js-modal-close')) {
@@ -146,7 +160,8 @@
                 $("#authority").val('');
                 $("#powerAlias").val('');
                 $modal.modal('close');
-            }else if(($target).hasClass('js-after-power-submit')){
+            }
+            else if(($target).hasClass('js-after-power-submit')){
                 const afterPowerId = $("#afterPowerId").val();
                 const authority = $("#authority").val();
                 const powerUrl = $("#powerUrl").val();

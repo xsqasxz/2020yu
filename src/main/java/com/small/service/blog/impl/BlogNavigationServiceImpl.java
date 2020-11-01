@@ -1,10 +1,15 @@
 package com.small.service.blog.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.small.constant.RedisNameState;
+import com.small.dto.blog.BlogDto;
 import com.small.dto.blog.BlogNavigationDto;
 import com.small.entity.blog.BlogNavigation;
 import com.small.mapper.blog.BlogNavigationMapper;
+import com.small.mapper.front.FrontHtmlMapper;
 import com.small.service.blog.BlogNavigationService;
+import com.small.vo.blog.DetailedVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +33,8 @@ public class BlogNavigationServiceImpl implements BlogNavigationService {
 
     @Resource
     private BlogNavigationMapper blogNavigationMapper;
+    @Resource
+    private FrontHtmlMapper frontHtmlMapper;
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -61,5 +68,11 @@ public class BlogNavigationServiceImpl implements BlogNavigationService {
             redisBlogNavigationList = blogNavigationDtos.stream().sorted(Comparator.comparing(BlogNavigationDto::getNavigationSerialNumber)).collect(Collectors.toList());
         }
         return redisBlogNavigationList;
+    }
+
+    @Override
+    public PageInfo<DetailedVo> getDetailed(BlogDto blogDto) {
+        PageHelper.startPage(blogDto.getPageNum(), blogDto.getPageSize());
+        return new PageInfo<>(frontHtmlMapper.getDetailed(blogDto));
     }
 }

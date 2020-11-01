@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.validation.Valid;
 
 /**
@@ -24,9 +23,8 @@ import javax.validation.Valid;
 @RequestMapping("/front")
 public class FrontReleaseController {
     private static final Logger logger = LogManager.getLogger();
-
     @Autowired
-    public FrontReleaseService frontReleaseService;
+    private FrontReleaseService frontReleaseService;
 
     @RequestMapping("/frontRelease")
     public String frontRelease(@Valid FrontReleaseDto frontReleaseDto,Model model) {
@@ -67,5 +65,34 @@ public class FrontReleaseController {
         model.addAttribute("frontHtml",frontReleaseService.selectByPrimaryKey(frontReleaseDto));
         OrgUtil.getModel(model,UtilsConstant.FRONT);
         return "front/indexTemplate";
+    }
+
+
+    /**
+     * 更新首页
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/crdateHomeHtml")
+    public JsonResponse crdateHomeHtml(){
+        return frontReleaseService.crdateHomeHtml();
+    }
+
+    /**
+     * 更新详情列表页面
+     */
+    @ResponseBody
+    @RequestMapping("/crdateDetailedHtml")
+    public JsonResponse crdateDetailedHtml(){
+        return frontReleaseService.crdateDetailedHtml();
+    }
+
+    /**
+     * 更新详情页面
+     */
+    @ResponseBody
+    @RequestMapping("/crdatedetailsHtml")
+    public JsonResponse crdatedetailsHtml(){
+        return frontReleaseService.crdatedetailsHtml();
     }
 }
