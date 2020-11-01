@@ -40,7 +40,8 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             collection.forEach(configAttribute -> {
                 String needRole = configAttribute.getAttribute();
                 logger.debug("权限名称:{} ,登录帐号名称：{}",needRole,authentication.getName());
-                if(SuccessStaticState.AUTHORITY.equals(needRole) && !SuccessStaticState.ANONYMOUSUSER.equals(authentication.getName())) {
+//                if(SuccessStaticState.AUTHORITY.equals(needRole) && !SuccessStaticState.ANONYMOUSUSER.equals(authentication.getName())) {
+                if(SuccessStaticState.AUTHORITY.equals(needRole)) {
                     isJurisdiction.set(false);
                 }else{
                     //admin帐号和登录帐号不进行校验

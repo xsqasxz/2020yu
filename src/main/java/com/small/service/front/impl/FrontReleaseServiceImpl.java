@@ -41,6 +41,8 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
     public JsonResponse saveFrontRelease(FrontReleaseDto frontReleaseDto) {
         FrontHtml frontHtml = new FrontHtml(frontReleaseDto);
         if(frontHtml!=null && frontHtml.getId()!=null){
+            frontHtml.setWantUpdate(true);
+            frontHtml.setTakeEffect(true);
             frontHtmlMapper.updateByPrimaryKeySelective(frontHtml);
         }else {
             frontHtmlMapper.insert(frontHtml);
@@ -103,12 +105,20 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
         frontHtml.setWantUpdate(true);
         List<FrontHtml> list= frontHtmlMapper.select(frontHtml);
         Context context = new Context();
+        context.setVariable("urlPath",toConfigure.getUrlPath());
         list.forEach(fh->{
             context.setVariable("htmlText",fh.getHtmlText());
+            context.setVariable("htmlId",fh.getId());
             genHtmlPage("details"+fh.getId(),context,"blog/blog-details-template");
         });
         list.parallelStream().forEach(fh->frontHtmlMapper.updateByPrimaryKeySelective(new FrontHtml(fh.getId(),false)));
         return JsonResponse.ok("更新详情页面成功");
+    }
+
+    @Override
+    public JsonResponse selectIdByPrimaryKey(Integer id, String prev) {
+        Integer queryId= frontHtmlMapper.selectIdByPrimaryKey(id,prev);
+        return JsonResponse.okData("查询成功",queryId==null?id:queryId);
     }
 
     /**

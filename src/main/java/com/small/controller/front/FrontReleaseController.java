@@ -95,4 +95,22 @@ public class FrontReleaseController {
     public JsonResponse crdatedetailsHtml(){
         return frontReleaseService.crdatedetailsHtml();
     }
+
+    /**
+     * 返回详情上一页id
+     */
+    @ResponseBody
+    @RequestMapping("/paginationPrev")
+    public JsonResponse paginationPrev(Integer frontHtmlId){
+        return frontReleaseService.selectIdByPrimaryKey(frontHtmlId,"prev");
+    }
+    /**
+     * 返回详情下一页id
+     */
+    @ResponseBody
+    @RequestMapping("/paginationNext")
+    public JsonResponse paginationNext(Integer frontHtmlId){
+        return frontReleaseService.selectIdByPrimaryKey(frontHtmlId,"next");
+    }
+
 }

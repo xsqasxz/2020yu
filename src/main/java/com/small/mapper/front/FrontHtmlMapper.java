@@ -4,6 +4,7 @@ import com.small.dto.blog.BlogDto;
 import com.small.dto.front.FrontPageDto;
 import com.small.entity.front.FrontHtml;
 import com.small.vo.blog.DetailedVo;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface FrontHtmlMapper extends Mapper<FrontHtml> {
     List<FrontHtml> getFrontHtml(FrontPageDto frontPageDto);
 
     List<DetailedVo> getDetailed(BlogDto blogDto);
+
+    Integer selectIdByPrimaryKey(@Param("id") Integer id,@Param("prev") String prev);
 }

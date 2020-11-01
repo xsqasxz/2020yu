@@ -49,6 +49,10 @@ public class FrontHtml implements Serializable {
     public FrontHtml() {
     }
 
+    public FrontHtml(Integer id) {
+        this.id = id;
+    }
+
     public FrontHtml(FrontReleaseDto frontReleaseDto) {
         this.id = frontReleaseDto.getFrontReleaseId();
         this.htmlName = frontReleaseDto.getHtmlName();

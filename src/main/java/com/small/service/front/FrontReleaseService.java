@@ -24,4 +24,6 @@ public interface FrontReleaseService {
     JsonResponse crdateDetailedHtml();
 
     JsonResponse crdatedetailsHtml();
+
+    JsonResponse selectIdByPrimaryKey(Integer id, String prev);
 }

@@ -23,16 +23,26 @@
         <div class="am-g">
             <div class="am-u-sm-12 am-u-md-2 am-form-group am-btn-toolbar">
                 <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default js-home-fr"><span class="am-icon-home"></span>首页模版</button>
-                    <button type="button" class="am-btn am-btn-default js-details-fr"><span class="am-icon-code"></span>详情模版</button>
+                    <!--<button type="button" class="am-btn am-btn-default js-home-fr"><span class="am-icon-home"></span>首页模版</button>-->
+                    <!--<button type="button" class="am-btn am-btn-default js-details-fr"><span class="am-icon-code"></span>详情模版</button>-->
                     <button type="button" class="am-btn am-btn-default js-save-fr"><span class="am-icon-save"></span>保存</button>
                 </div>
             </div>
         </div>
-
+        <div class="am-g">
+            <input th:id="frontReleaseId" type="hidden" th:if="${frontHtml!=null}" th:value="${frontHtml.id}">
+            <input th:id="htmlType" type="hidden" th:value="${frontHtml!=null?frontHtml.htmlType:1}">
+            <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                <div class="am-u-md-3">
+                    模版名称
+                </div>
+                <div class="am-input-group am-input-group-sm am-u-md-9">
+                    <input type="text" th:id="htmlName" th:value="${frontHtml!=null?frontHtml.htmlName:''}" class="am-form-field">
+                </div>
+            </div>
+        </div>
         <div class="am-g" style="height: 700px;">
             <div class="am-u-sm-12" >
-                <input th:id="frontReleaseId" type="hidden" th:if="${frontHtml!=null}" th:value="${frontHtml.id}">
                 <textarea style="height: 600px;" title="富文本插件" th:utext="${frontHtml!=null?frontHtml.htmlText:''}">
                  </textarea>
             </div>

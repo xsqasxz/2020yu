@@ -11,29 +11,31 @@ tinymce.init({
 });
 
 $(function() {
-    const $home_html="";
-    let $html_type=1;
-
-    /**首页模版*/
-    $(".js-home-fr").click(function(){
-        $html_type=1;
-        //远程获取后返回
-        tinymce.activeEditor.setContent($home_html);
-    });
-    /**详情模版*/
-    $(".js-details-fr").click(function(){
-        $html_type=2;
-    });
+    // const $home_html="";
+    // let $html_type=1;
+    // /**首页模版*/
+    // $(".js-home-fr").click(function(){
+    //     $html_type=1;
+    //     //远程获取后返回
+    //     tinymce.activeEditor.setContent($home_html);
+    // });
+    // /**详情模版*/
+    // $(".js-details-fr").click(function(){
+    //     $html_type=2;
+    // });
 
     /**保存编辑后的模版*/
     $(".js-save-fr").click(function(){
         const $frontReleaseId = $("#frontReleaseId").val();
+        const $html_type = $("#htmlType").val();
+        const $html_name = $("#htmlName").val();
         //得到编辑后的html
         const $html_text = tinymce.activeEditor.getContent();
         $.post("/front/saveFrontRelease",{
             htmlText:$html_text,
             frontReleaseId:$frontReleaseId,
-            htmlType:$html_type
+            htmlType:$html_type,
+            htmlName:$html_name
         },function(data){
             if(data.success){
                 myAlert(data.ok);

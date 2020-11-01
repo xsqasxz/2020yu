@@ -47,4 +47,24 @@
             </if>
         </where>
     </select>
+
+    <select id="selectIdByPrimaryKey" resultType="Integer">
+        select
+        fh.id as frontHtmlId
+        from front_html fh
+        <where>
+            fh.html_type = 2
+            <if test="id !=null and prev=='prev'">
+                and fh.id &lt; #{id} and exists (SELECT f.html_keyword from front_html f where f.id=#{id} AND f.html_keyword = fh.html_keyword)
+            </if>
+            <if test="id !=null and prev=='next'">
+                and fh.id &gt; #{id} and exists (SELECT f.html_keyword from front_html f where f.id=#{id} AND f.html_keyword = fh.html_keyword)
+            </if>
+        </where>
+        <if test="prev=='prev'">
+            ORDER BY fh.id desc
+        </if>
+        limit 1
+    </select>
+
 </mapper>
