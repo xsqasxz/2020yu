@@ -3,14 +3,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
   <meta charset="UTF-8">
-  <title>奇妙茶馆</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <title th:text="${htmlName}+'_奇妙茶馆'">奇妙茶馆</title>
   <link rel="alternate icon" type="image/png" th:href="${urlPath}+'/i/favicon.ico'">
-  <link rel="stylesheet" th:href="${urlPath}+'/css/amazeui.css'"/>
+  <!--<link rel="stylesheet" th:href="${urlPath}+'/css/amazeui.css'"/>-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/css/amazeui.min.css"/>
   <link rel="stylesheet" th:href="${urlPath}+'/css/blog-details.css'"/>
 </head>
 <body>
@@ -23,9 +19,26 @@
     <small><a style="color:#666" target="beian" href="http://beian.miit.gov.cn">粤ICP备2020098974号</a></small>
   </p>
 </footer>
-<script th:src="${urlPath}+'/js/amazeui.ie8polyfill.min.js'"></script>
-<script th:src="${urlPath}+'/js/jquery.min.js'"></script>
-<script th:src="${urlPath}+'/js/amazeui.min.js'"></script>
+<!--<script th:src="${urlPath}+'/js/amazeui.ie8polyfill.min.js'"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/js/amazeui.ie8polyfill.min.js"></script>
+<!--<script th:src="${urlPath}+'/js/jquery.min.js'"></script>-->
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<!--<script th:src="${urlPath}+'/js/amazeui.min.js'"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/amazeui/2.7.2/js/amazeui.min.js"></script>
 <script th:src="${urlPath}+'/js/blog/blog-details.js'"></script>
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else{
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
 </body>
 </html>

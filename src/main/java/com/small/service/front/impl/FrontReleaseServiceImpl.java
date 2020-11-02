@@ -107,6 +107,7 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
         Context context = new Context();
         context.setVariable("urlPath",toConfigure.getUrlPath());
         list.forEach(fh->{
+            context.setVariable("htmlName",fh.getHtmlName());
             context.setVariable("htmlText",fh.getHtmlText());
             context.setVariable("htmlId",fh.getId());
             genHtmlPage("details"+fh.getId(),context,"blog/blog-details-template");
