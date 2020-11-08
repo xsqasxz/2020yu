@@ -1,0 +1,51 @@
+<!doctype html>
+<html class="no-js"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{utils::admin_head}">
+</head>
+<body>
+<!-- 头部功能部分 start-->
+<header th:insert="~{utils::admin_header}" >
+</header>
+<!-- 头部功能部分 end-->
+
+<div class="am-cf admin-main">
+    <!-- 导航栏公共部分 start -->
+    <div th:insert="~{utils::navigation_bar}"></div>
+    <!-- 导航栏公共部分 end -->
+    <!-- 内容部分 start -->
+    <div class="admin-content">
+
+        <div class="am-cf am-padding">
+            <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">404</strong> / <small>That’s an error</small></div>
+        </div>
+
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <h2 class="am-text-center am-text-xxxl am-margin-top-lg">404. Not Found</h2>
+                <p class="am-text-center">没有找到你要的页面</p>
+                <pre class="page-404">
+          .----.
+       _.'__    `.
+   .--($)($$)---/#\
+ .' @          /###\
+ :         ,   #####
+  `-..__.-' _.-\###/
+        `;_:    `"'
+      .'"""""`.
+     /,  ya ,\\
+    //  404!  \\
+    `-._______.-'
+    ___`. | .'___
+   (______|______)
+        </pre>
+            </div>
+        </div>
+    </div>
+    <!-- 内容部分 end -->
+</div>
+<!--底部js引入-->
+<footer th:insert="~{utils::bottom_js}">
+</footer>
+</body>
+</html>

@@ -33,18 +33,18 @@
                 <input th:name="pageSize" th:id="pageSize" th:value="${pageContent.pageSize}" type="hidden" >
                 <div class="am-u-sm-12 am-u-md-3 am-form-group">
                     <div class="am-u-sm-4 am-u-md-3">
-                        客户姓名
+                        名称
                     </div>
                     <div class="am-input-group am-input-group-sm">
-                        <input type="text" th:name="authority" class="am-form-field">
+                        <input type="text" th:name="htmlName" th:value="${frontPageDto!=null?frontPageDto.htmlName:''}" class="am-form-field">
                     </div>
                 </div>
                 <div class="am-u-sm-12 am-u-md-3 am-form-group">
                     <div class="am-u-sm-4 am-u-md-3">
-                        URL地址
+                        大类
                     </div>
                     <div class="am-input-group am-input-group-sm">
-                        <input type="text" th:name="powerUrl" class="am-form-field">
+                        <input type="text" th:name="htmlKeyword" th:value="${frontPageDto!=null?frontPageDto.htmlKeyword:''}" class="am-form-field">
                     </div>
                 </div>
                 <div class="am-u-sm-12 am-u-md-3">

@@ -130,7 +130,7 @@ $(function() {
         if (htmlType === '<span>模版</span>'){
           myAlert("只有首页模版和详情模版可以预览！");
         }else{
-            window.open("http://localhost:8081/front/preview?frontReleaseId="+frontHtmlId, "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
+            window.open("/front/preview?frontReleaseId="+frontHtmlId, "_blank",'height=1300,width=700,status=yes,toolbar=no,menubar=no,location=no')
         }
     });
 

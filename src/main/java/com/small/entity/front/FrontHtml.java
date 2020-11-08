@@ -62,7 +62,7 @@ public class FrontHtml implements Serializable {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SysUser user = (SysUser)authentication.getPrincipal();
         this.userId = user.getUserId();
-        this.takeEffect = frontReleaseDto.getTakeEffect()==null?false:frontReleaseDto.getTakeEffect();
+        this.takeEffect = frontReleaseDto.getTakeEffect()==null?true:frontReleaseDto.getTakeEffect();
         this.wantUpdate = true;
         this.htmlUrl = frontReleaseDto.getHtmlUrl();
         this.createDate = new Date();

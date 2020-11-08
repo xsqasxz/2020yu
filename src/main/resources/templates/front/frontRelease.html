@@ -26,18 +26,50 @@
                     <!--<button type="button" class="am-btn am-btn-default js-home-fr"><span class="am-icon-home"></span>首页模版</button>-->
                     <!--<button type="button" class="am-btn am-btn-default js-details-fr"><span class="am-icon-code"></span>详情模版</button>-->
                     <button type="button" class="am-btn am-btn-default js-save-fr"><span class="am-icon-save"></span>保存</button>
+                    <button type="button" class="am-btn am-btn-default js-front-page-preview"><span class="am-icon-eye"></span> 预览</button>
                 </div>
             </div>
         </div>
         <div class="am-g">
             <input th:id="frontReleaseId" type="hidden" th:if="${frontHtml!=null}" th:value="${frontHtml.id}">
-            <input th:id="htmlType" type="hidden" th:value="${frontHtml!=null?frontHtml.htmlType:1}">
             <div class="am-u-sm-12 am-u-md-3 am-form-group">
                 <div class="am-u-md-3">
                     模版名称
                 </div>
                 <div class="am-input-group am-input-group-sm am-u-md-9">
-                    <input type="text" th:id="htmlName" th:value="${frontHtml!=null?frontHtml.htmlName:''}" class="am-form-field">
+                    <input type="text" th:id="htmlName" th:value="${frontHtml!=null?frontHtml.htmlName:''}">
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                <div class="am-u-md-3">
+                    模版类型
+                </div>
+                <div class="am-input-group am-input-group-sm am-u-md-9">
+                    <select th:id="htmlType" data-am-selected="{btnSize: 'sm'}">
+                        <option value="2">详情模版</option>
+                        <option value="1">首页模版</option>
+                    </select>
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                <div class="am-u-md-3">
+                    是否生效
+                </div>
+                <div class="am-input-group am-input-group-sm am-u-md-9">
+                    <label class="am-radio-inline">
+                        <input type="radio" name="takeEffect" value="true" data-am-ucheck th:checked="${frontHtml!=null?frontHtml.takeEffect:true}">有效
+                    </label>
+                    <label class="am-radio-inline">
+                        <input type="radio" name="takeEffect" value="false" data-am-ucheck th:checked="${frontHtml!=null?!frontHtml.takeEffect:false}">无效
+                    </label>
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-3 am-form-group">
+                <div class="am-u-md-3">
+                    类型
+                </div>
+                <div class="am-input-group am-input-group-sm am-u-md-9">
+                    <input type="text" id="htmlKeyword" th:value="${frontHtml!=null?frontHtml.htmlKeyword:''}"/>
                 </div>
             </div>
         </div>
@@ -54,6 +86,10 @@
 
 <!--底部js引入-->
 <footer th:insert="~{utils::bottom_js}"></footer>
-<script th:inline="javascript" th:src="@{/js/front/frontRelease.js}"></script>
+<script th:inline="javascript" th:src="@{/js/front/frontRelease.js}">
+    $(function() {
+        getSelected($("#htmlType"),[[${frontHtml!=null?frontHtml.htmlType:2}]]);
+    });
+</script>
 </body>
 </html>

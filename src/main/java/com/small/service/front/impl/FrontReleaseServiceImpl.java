@@ -1,5 +1,6 @@
 package com.small.service.front.impl;
 
+import com.small.config.BeanFactory;
 import com.small.constant.FrontState;
 import com.small.constant.ToConfigure;
 import com.small.dto.blog.BlogDto;
@@ -33,16 +34,21 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
     private FrontHtmlMapper frontHtmlMapper;
     @Autowired
     private SpringTemplateEngine springTemplateEngine;
-    @Autowired
-    private ToConfigure toConfigure;
-
+    private static String urlPath;
+    private static String nginxPath;
+    public FrontReleaseServiceImpl() {
+        if(urlPath==null){
+            urlPath = BeanFactory.getBean(ToConfigure.class).getUrlPath();
+        }
+        if(nginxPath==null){
+            nginxPath = BeanFactory.getBean(ToConfigure.class).getNginxPath();
+        }
+    }
 
     @Override
     public JsonResponse saveFrontRelease(FrontReleaseDto frontReleaseDto) {
         FrontHtml frontHtml = new FrontHtml(frontReleaseDto);
         if(frontHtml!=null && frontHtml.getId()!=null){
-            frontHtml.setWantUpdate(true);
-            frontHtml.setTakeEffect(true);
             frontHtmlMapper.updateByPrimaryKeySelective(frontHtml);
         }else {
             frontHtmlMapper.insert(frontHtml);
@@ -75,7 +81,7 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
         List<FrontHtml> list= frontHtmlMapper.select(frontHtml);
         Context context = new Context();
         context.setVariable("htmlList",list);
-        context.setVariable("urlPath",toConfigure.getUrlPath());
+        context.setVariable("urlPath",urlPath);
         genHtmlPage("index",context,"blog/index-template");
         list.parallelStream().forEach(fh->frontHtmlMapper.updateByPrimaryKeySelective(new FrontHtml(fh.getId(),false)));
         return JsonResponse.ok("更新首页成功！");
@@ -89,7 +95,7 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
         Map<String,List<DetailedVo>> map= list.parallelStream().collect(Collectors.groupingBy(DetailedVo::getHtmlKeyword));
         //将分组后的数据进行生成
         Context context = new Context();
-        context.setVariable("urlPath",toConfigure.getUrlPath());
+        context.setVariable("urlPath",urlPath);
         map.forEach((k, v) -> {
             context.setVariable("detailedVoList",v);
             genHtmlPage(k,context,"blog/detailed-template");
@@ -105,7 +111,7 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
         frontHtml.setWantUpdate(true);
         List<FrontHtml> list= frontHtmlMapper.select(frontHtml);
         Context context = new Context();
-        context.setVariable("urlPath",toConfigure.getUrlPath());
+        context.setVariable("urlPath",urlPath);
         list.forEach(fh->{
             context.setVariable("htmlName",fh.getHtmlName());
             context.setVariable("htmlText",fh.getHtmlText());
@@ -131,7 +137,7 @@ public class FrontReleaseServiceImpl implements FrontReleaseService {
     private void genHtmlPage(Object htmlName,Context context,String viewName) {
         FileWriter fileWriter = null;
         try {
-            StringBuffer stringBuffer = new StringBuffer(toConfigure.getNginxPath());
+            StringBuffer stringBuffer = new StringBuffer(nginxPath);
             stringBuffer.append(htmlName).append(FrontState.HTML_ADDRESS_SUFFIX);
             fileWriter = new FileWriter(stringBuffer.toString());
             //将thymeleaf模板生成的结果存入静态文件中

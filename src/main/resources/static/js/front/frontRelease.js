@@ -29,13 +29,17 @@ $(function() {
         const $frontReleaseId = $("#frontReleaseId").val();
         const $html_type = $("#htmlType").val();
         const $html_name = $("#htmlName").val();
+        const $take_effect = $('input[name="takeEffect"]:checked').val();
+        const $html_keyword = $("#htmlKeyword").val();
         //得到编辑后的html
         const $html_text = tinymce.activeEditor.getContent();
         $.post("/front/saveFrontRelease",{
             htmlText:$html_text,
             frontReleaseId:$frontReleaseId,
             htmlType:$html_type,
-            htmlName:$html_name
+            htmlName:$html_name,
+            takeEffect:$take_effect,
+            htmlKeyword:$html_keyword
         },function(data){
             if(data.success){
                 myAlert(data.ok);

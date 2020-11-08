@@ -1,5 +1,6 @@
 package com.small.security.service;
 
+import com.small.config.BeanFactory;
 import com.small.constant.SuccessStaticState;
 import com.small.constant.ToConfigure;
 import com.small.entity.after.AfterPower;
@@ -7,16 +8,13 @@ import com.small.mapper.after.AfterPowerMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,44 +33,33 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
     //url别名记录
     private static Map<String,String> urlMap;
 
-    @Resource
-    private AfterPowerMapper afterPowerMapper;
-    @Autowired
-    private ToConfigure toConfigure;
+    private static Boolean authorityVerification;
+    public MyInvocationSecurityMetadataSourceService() {
+        if(authorityVerification==null){
+            authorityVerification = Boolean.valueOf(BeanFactory.getBean(ToConfigure.class).getAuthorityVerification());
+        }
+    }
+
+
 
     /**
      * 根据当前访问的url来判断是否有权限进行访问
      */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        logger.debug("根据url判断是否有权限进行访问");
+//        logger.debug("根据url判断是否有权限进行访问");
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        logger.debug("访问的url：{}",requestUrl);
+//        logger.debug("访问的url：{}",requestUrl);
         String key = requestUrl.split("\\?")[0];
         String authority = getUrlMap(key);
         if(StringUtils.isEmpty(authority)){
-            if(authority == null) {
-                AfterPower afterPower = new AfterPower();
-                afterPower.setPowerUrl(key);
-                AfterPower afterPower1 = afterPowerMapper.selectOne(afterPower);
-                if (afterPower1 == null) {
-                    afterPower.setAuthority(SuccessStaticState.EMPTY);
-                    afterPower.setPowerAlias(SuccessStaticState.EMPTY);
-                    afterPower.setPowerLevel(0);
-                    afterPowerMapper.insert(afterPower);
-                    urlMap.put(key, SuccessStaticState.EMPTY);
-                } else if (!StringUtils.isEmpty(afterPower1.getAuthority())) {
-                    urlMap.put(key, afterPower1.getAuthority());
-                }
-                authority = SuccessStaticState.EMPTY;
-            }
             logger.warn("当前访问的url：{} 未配置权限，请尽快配置",requestUrl);
-            if(toConfigure.getAuthorityVerification().equals("false")) {
+            //这里加入一个切面，没有权限的url地址全部记录下来
+            if(!authorityVerification) {
                 authority = SuccessStaticState.AUTHORITY;
+            }else{
+                return null;
             }
-        }
-        if(StringUtils.isEmpty(authority)){
-            throw new BadCredentialsException(SuccessStaticState.INSUFFICIENT_AUTHORITY);
         }
         return SecurityConfig.createList(authority);
     }
@@ -102,7 +89,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 
     private String getUrlMap(String key){
         if(urlMap==null){
-            List<AfterPower> list = afterPowerMapper.selectAll();
+            List<AfterPower> list = BeanFactory.getBean(AfterPowerMapper.class).selectAll();
             if(!CollectionUtils.isEmpty(list)) {
                 urlMap = list.stream().collect(Collectors.toMap(AfterPower::getPowerUrl, AfterPower::getAuthority));
             }else {
@@ -127,7 +114,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
      * 更新静态权限
      */
     public void updateUrlMap(){
-        List<AfterPower> list = afterPowerMapper.selectAll();
+        List<AfterPower> list = BeanFactory.getBean(AfterPowerMapper.class).selectAll();
         if(!CollectionUtils.isEmpty(list)) {
             urlMap = list.stream().collect(Collectors.toMap(AfterPower::getPowerUrl, AfterPower::getAuthority));
         }else {

@@ -50,7 +50,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web){
         // 给 swagger 放行；不需要权限能访问的资源
-        web.ignoring().antMatchers("/static/**","/css/**", "/fonts/**","/i/**","/image/**","/js/**","/toLogin","/blog/**","/*.html");
+        web.ignoring().antMatchers("/css/**");
+        web.ignoring().antMatchers("/fonts/**");
+        web.ignoring().antMatchers("/i/**");
+        web.ignoring().antMatchers("/image/**");
+        web.ignoring().antMatchers("/js/**");
+        web.ignoring().antMatchers("/toLogin");
+        web.ignoring().antMatchers("/blog/**");
+        web.ignoring().antMatchers("/*.html");
     }
 
     /**
