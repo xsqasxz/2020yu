@@ -2,7 +2,6 @@ package com.small.security.service;
 
 import com.small.config.BeanFactory;
 import com.small.constant.SuccessStaticState;
-import com.small.constant.ToConfigure;
 import com.small.entity.after.AfterPower;
 import com.small.mapper.after.AfterPowerMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -29,18 +28,9 @@ import java.util.stream.Collectors;
 @Service
 public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
     private static final Logger logger = LogManager.getLogger();
-
     //url别名记录
     private static Map<String,String> urlMap;
-
-    private static Boolean authorityVerification;
-    public MyInvocationSecurityMetadataSourceService() {
-        if(authorityVerification==null){
-            authorityVerification = Boolean.valueOf(BeanFactory.getBean(ToConfigure.class).getAuthorityVerification());
-        }
-    }
-
-
+//    private static Boolean authorityVerification = Boolean.valueOf(BeanFactory.getBean(ToConfigure.class).getAuthorityVerification());
 
     /**
      * 根据当前访问的url来判断是否有权限进行访问
@@ -55,11 +45,11 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         if(StringUtils.isEmpty(authority)){
             logger.warn("当前访问的url：{} 未配置权限，请尽快配置",requestUrl);
             //这里加入一个切面，没有权限的url地址全部记录下来
-            if(!authorityVerification) {
-                authority = SuccessStaticState.AUTHORITY;
-            }else{
+//            if(!authorityVerification) {
+//                authority = SuccessStaticState.AUTHORITY;
+//            }else{
                 return null;
-            }
+//            }
         }
         return SecurityConfig.createList(authority);
     }
