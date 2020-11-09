@@ -39,8 +39,6 @@ public class FrontHtml implements Serializable {
     private Boolean takeEffect;
     /**是否更新*/
     private Boolean wantUpdate;
-    /**模版生成的url地址 类型为详情模版时专用*/
-    private String htmlUrl;
     /**创建时间*/
     private Date createDate;
     /**修改时间*/
@@ -64,7 +62,6 @@ public class FrontHtml implements Serializable {
         this.userId = user.getUserId();
         this.takeEffect = frontReleaseDto.getTakeEffect()==null?true:frontReleaseDto.getTakeEffect();
         this.wantUpdate = true;
-        this.htmlUrl = frontReleaseDto.getHtmlUrl();
         this.createDate = new Date();
         if(this.id!=null) {
             this.updateDate = new Date();
@@ -80,7 +77,6 @@ public class FrontHtml implements Serializable {
         SysUser user = (SysUser)authentication.getPrincipal();
         this.userId = user.getUserId();
         this.takeEffect = frontPageDto.getTakeEffect()==null?false:frontPageDto.getTakeEffect();
-        this.htmlUrl = frontPageDto.getHtmlUrl();
         if(this.id!=null) {
             this.updateDate = new Date();
         }

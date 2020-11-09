@@ -30,8 +30,4 @@ public class FrontReleaseDto {
     private String htmlText;
     /**是否生效*/
     private Boolean takeEffect;
-    /**模版生成的url地址 类型为详情模版时专用*/
-    @Size(max = 300,message = "url地址不可超过300")
-    private String htmlUrl;
-
 }

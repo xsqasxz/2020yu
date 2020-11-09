@@ -9,7 +9,6 @@
            fh.html_keyword as htmlKeyword,
            fh.user_id as userId,
            fh.take_effect as takeEffect,
-           fh.html_url as htmlUrl,
            fh.create_date as createDate,
            fh.update_date as updateDate
         from front_html fh

@@ -64,7 +64,6 @@
                         <th>大类</th>
                         <th class="am-hide-sm-only">创建人</th>
                         <th>是否生效</th>
-                        <th class="am-hide-sm-only">url地址</th>
                         <th class="am-hide-sm-only">修改时间</th>
                         <th class="am-hide-sm-only">创建时间</th>
                         <th>操作</th>
@@ -81,7 +80,6 @@
                         <td th:text="${frontHtml.htmlKeyword}" class="table-html-keyword">大类</td>
                         <td th:text="${T(com.small.constant.RedisUtilsData).getUserName(frontHtml.userId)}" class="am-hide-sm-only">创建人</td>
                         <td th:text="${frontHtml.takeEffect?'是':'否'}" class="table-html-take-effect">是否生效</td>
-                        <td th:text="${frontHtml.htmlUrl}" class="table-html-url am-hide-sm-only">url地址</td>
                         <td th:text="${#dates.format(frontHtml.updateDate, 'yyyy-MM-dd HH:mm:ss')}" class="am-hide-sm-only">修改时间</td>
                         <td th:text="${#dates.format(frontHtml.createDate, 'yyyy-MM-dd HH:mm:ss')}" class="am-hide-sm-only">创建时间</td>
                         <td>
@@ -142,10 +140,6 @@
                     <div class="am-form-group">
                         <label for="htmlKeyword">大类：</label>
                         <input type="text" id="htmlKeyword" required/>
-                    </div>
-                    <div class="am-form-group">
-                        <label for="htmlUrl">url地址：</label>
-                        <input type="text" id="htmlUrl" required/>
                     </div>
                     <button class="am-btn am-btn-secondary js-after-power-submit" type="button">提交</button>
                     <button class="am-btn js-modal-close" type="button">关闭</button>

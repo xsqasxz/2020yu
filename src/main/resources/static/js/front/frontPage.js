@@ -8,12 +8,10 @@ $(function() {
         let htmlName = $(this).parents("tr").children("td.table-html-name").html();
         let htmlType = $(this).parents("tr").children("td.table-html-type").html();
         let htmlKeyword = $(this).parents("tr").children("td.table-html-keyword").html();
-        let htmlUrl = $(this).parents("tr").children("td.table-html-url").html();
         let takeEffect = $(this).parents("tr").children("td.table-html-take-effect").html();
         $("#frontHtmlId").val(frontHtmlId);
         $("#htmlName").val(htmlName);
         $("#htmlKeyword").val(htmlKeyword);
-        $("#htmlUrl").val(htmlUrl);
         if(takeEffect=='是'){
             $("input[type=radio][name=takeEffect][value=true]").uCheck('check');
             $("input[type=radio][name=takeEffect][value=false]").uCheck('uncheck');
@@ -48,15 +46,13 @@ $(function() {
             let htmlName = $("#htmlName").val();
             let htmlType = $("#htmlType").val();
             let htmlKeyword = $("#htmlKeyword").val();
-            let htmlUrl = $("#htmlUrl").val();
             let takeEffect = $("input[type=radio][name=takeEffect]:checked").val();
             $.post("/front/updateFrontHtml",{
                 frontHtmlId:frontHtmlId,
                 htmlName:htmlName,
                 htmlType:htmlType,
                 takeEffect:takeEffect,
-                htmlKeyword:htmlKeyword,
-                htmlUrl:htmlUrl
+                htmlKeyword:htmlKeyword
             },function(data){
                 if(data.success){
                     $(clickTr).parents("tr").children("td.table-html-name").html(htmlName);
@@ -72,7 +68,6 @@ $(function() {
                             break;
                     }
                     $(clickTr).parents("tr").children("td.table-html-keyword").html(htmlKeyword);
-                    $(clickTr).parents("tr").children("td.table-html-url").html(htmlUrl);
                     $(clickTr).parents("tr").children("td.table-html-take-effect").html(takeEffect===true||takeEffect==='true'?'是':'否');
                     modalClose();
                 }else{
@@ -158,7 +153,6 @@ $(function() {
         $("#frontHtmlId").val('');
         $("#htmlName").val('');
         $("#htmlKeyword").val('');
-        $("#htmlUrl").val('');
         $("input[type=radio][name=takeEffect][value=true]").uCheck('uncheck');
         $("input[type=radio][name=takeEffect][value=false]").uCheck('uncheck');
         $modal.modal('close');

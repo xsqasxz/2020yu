@@ -19,4 +19,10 @@ $(function() {
             }
         });
     });
+    //默认隐藏A标签下面的small
+    $("a[class='a_click'] small").hide();
+    $("a[class='a_click']").click(function(){
+        $(this).children("small").toggle();
+    });
+
 });

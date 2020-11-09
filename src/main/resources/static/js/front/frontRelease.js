@@ -1,4 +1,3 @@
-const $url_name="http://localhost:8081";
 /**初始化富文本编辑框*/
 tinymce.init({
     selector: 'textarea',

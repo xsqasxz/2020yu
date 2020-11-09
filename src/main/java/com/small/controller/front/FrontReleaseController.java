@@ -1,8 +1,10 @@
 package com.small.controller.front;
 
+import com.small.constant.FrontState;
 import com.small.constant.UtilsConstant;
 import com.small.dto.front.FrontReleaseDto;
 import com.small.entity.JsonResponse;
+import com.small.entity.front.FrontHtml;
 import com.small.service.front.FrontReleaseService;
 import com.small.utils.OrgUtil;
 import org.apache.logging.log4j.LogManager;
@@ -62,9 +64,14 @@ public class FrontReleaseController {
     @RequestMapping("/preview")
     public String preview(@Valid FrontReleaseDto frontReleaseDto,Model model) {
         logger.debug("模版预览:{}"+frontReleaseDto);
-        model.addAttribute("frontHtml",frontReleaseService.selectByPrimaryKey(frontReleaseDto));
+        FrontHtml frontHtml = frontReleaseService.selectByPrimaryKey(frontReleaseDto);
+        model.addAttribute("frontHtml",frontHtml);
         OrgUtil.getModel(model,UtilsConstant.FRONT);
-        return "front/indexTemplate";
+        if(FrontState.HTML_TYPE_DETAILS.equals(frontHtml.getHtmlType())){
+            return "blog/blog-details";
+        }else{
+            return "front/indexTemplate";
+        }
     }
 
 
